@@ -164,23 +164,42 @@
       </Border>
       
       <!-- Document Canvas with RichTextBox -->
-      <Border Grid.Row="3" Background="#E8EAED" Padding="15">
+      <Border Grid.Row="3" Background="#F0F2F5" Padding="0,20,0,0">
           <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-              <Border Background="White" CornerRadius="4" 
-                      HorizontalAlignment="Stretch" 
-                      MaxWidth="816" MinHeight="500"
-                      Padding="50,60">
-                  <TextBox x:Name="Editor"
-                           Text="{Binding DocumentContent}"
-                           AcceptsReturn="True"
-                           TextWrapping="Wrap"
-                           Background="Transparent"
-                           BorderThickness="0"
-                           FontFamily="Calibri"
-                           FontSize="12"
-                           VerticalAlignment="Stretch"
-                           HorizontalAlignment="Stretch"/>
-              </Border>
+              <StackPanel>
+                  <Border Background="White" 
+                          CornerRadius="2" 
+                          HorizontalAlignment="Center" 
+                          VerticalAlignment="Top"
+                          Width="816" MinHeight="1056"
+                          Margin="0,0,0,50"
+                          Padding="96"> <Border.Effect>
+                          <DropShadowEffect BlurRadius="10" Color="#99000000" Opacity="0.15" OffsetX="2" OffsetY="2"/>
+                      </Border.Effect>
+
+                     <TextBox x:Name="Editor"
+         Text="{Binding DocumentContent}"
+         AcceptsReturn="True"
+         TextWrapping="Wrap"
+         Background="Transparent"
+         BorderThickness="0"
+         FontFamily="{Binding SelectedFont}"
+         FontSize="{Binding SelectedFontSize}"
+         FontWeight="{Binding FontWeight}"
+         FontStyle="{Binding FontStyle}"
+         TextAlignment="{Binding TextAlignment}"
+         Foreground="{Binding TextColor}"
+         VerticalAlignment="Stretch"
+         HorizontalAlignment="Stretch">
+    <TextBox.Styles>
+        <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+    </TextBox.Styles>
+</TextBox>
+                  </Border>
+              </StackPanel>
           </ScrollViewer>
       </Border>
       

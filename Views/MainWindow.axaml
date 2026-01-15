@@ -19,7 +19,7 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <!-- Root Grid for overlaying window controls -->
+    <!-- Root Grid -->
     <Grid>
         <!-- Main Container with Rounded Corners -->
         <Border CornerRadius="20" Background="#FFFFFF" Margin="10" BoxShadow="0 4 15 0 #20000000">
@@ -27,7 +27,6 @@
                 
                 <!-- Header Row with Window Controls -->
                 <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="15,5,15,0">
-                    <!-- Drag area -->
                     <Border Grid.Column="0" Background="Transparent"/>
                     
                     <!-- Window Control Buttons -->
@@ -51,52 +50,69 @@
                 </Grid>
                 
                 <!-- Main Content Row -->
-                <Grid Grid.Row="1" ColumnDefinitions="240, *">
+                <Grid Grid.Row="1" ColumnDefinitions="Auto, *">
                     
                     <!-- Sidebar -->
-                    <Border Grid.Column="0" Background="#F8FAFD" CornerRadius="0,0,0,20" Padding="15">
+                    <Border Grid.Column="0" Background="#F8FAFD" CornerRadius="0,0,0,20" Padding="15"
+                            Width="{Binding SidebarWidth}">
+                        <Border.Transitions>
+                            <Transitions>
+                                <DoubleTransition Property="Width" Duration="0:0:0.2" Easing="CubicEaseOut"/>
+                            </Transitions>
+                        </Border.Transitions>
+
                         <StackPanel Spacing="5">
-                            <!-- Logo / App Name -->
-                            <StackPanel Orientation="Horizontal" Spacing="10" Margin="10,10,10,20">
-                                <TextBlock Text="Drive Share" FontSize="20" FontWeight="SemiBold" Foreground="#444746"/>
+                            <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,10,0,20">
+                                <Button Command="{Binding ToggleSidebarCommand}" 
+                                        Background="Transparent" 
+                                        Padding="5" 
+                                        CornerRadius="5"
+                                        HorizontalAlignment="Left">
+                                    <TextBlock Text="≡" FontSize="20" Foreground="#444746"/>
+                                </Button>
+                                
+                                <TextBlock Text="Drive Share" 
+                                           FontSize="20" 
+                                           FontWeight="SemiBold" 
+                                           Foreground="#444746"
+                                           VerticalAlignment="Center"
+                                           IsVisible="{Binding IsSidebarExpanded}"/>
                             </StackPanel>
 
-                            <!-- Main Navigation -->
                             <Button Command="{Binding NavigateCommand}" CommandParameter="Dashboard" Classes="NavButton">
                                 <StackPanel Orientation="Horizontal" Spacing="15">
-                                    <TextBlock Text="🏠"/> 
-                                    <TextBlock Text="Mi unidad"/>
+                                    <TextBlock Text="🏠" FontSize="18" Width="30" TextAlignment="Center"/> 
+                                    <TextBlock Text="Mi unidad" IsVisible="{Binding IsSidebarExpanded}"/>
                                 </StackPanel>
                             </Button>
                             
                             <Button Command="{Binding NavigateCommand}" CommandParameter="Share" Classes="NavButton">
                                 <StackPanel Orientation="Horizontal" Spacing="15">
-                                    <TextBlock Text="👥"/> 
-                                    <TextBlock Text="Compartidos conmigo"/>
+                                    <TextBlock Text="👥" FontSize="18" Width="30" TextAlignment="Center"/> 
+                                    <TextBlock Text="Compartidos" IsVisible="{Binding IsSidebarExpanded}"/>
                                 </StackPanel>
                             </Button>
                             
                             <Button Command="{Binding NavigateCommand}" CommandParameter="Trash" Classes="NavButton">
                                 <StackPanel Orientation="Horizontal" Spacing="15">
-                                    <TextBlock Text="🗑️"/> 
-                                    <TextBlock Text="Papelera"/>
+                                    <TextBlock Text="🗑️" FontSize="18" Width="30" TextAlignment="Center"/> 
+                                    <TextBlock Text="Papelera" IsVisible="{Binding IsSidebarExpanded}"/>
                                 </StackPanel>
                             </Button>
 
                             <Separator Margin="0,10" Background="#E0E0E0" Height="1"/>
 
-                            <!-- Apps Section -->
                             <Button Command="{Binding NavigateCommand}" CommandParameter="Word" Classes="NavButton">
                                 <StackPanel Orientation="Horizontal" Spacing="15">
-                                    <TextBlock Text="📝"/> 
-                                    <TextBlock Text="Hoja de documento"/>
+                                    <TextBlock Text="📝" FontSize="18" Width="30" TextAlignment="Center"/> 
+                                    <TextBlock Text="Documentos" IsVisible="{Binding IsSidebarExpanded}"/>
                                 </StackPanel>
                             </Button>
                             
                             <Button Command="{Binding NavigateCommand}" CommandParameter="Excel" Classes="NavButton">
                                 <StackPanel Orientation="Horizontal" Spacing="15">
-                                    <TextBlock Text="📊"/> 
-                                    <TextBlock Text="Hoja sheet"/>
+                                    <TextBlock Text="📊" FontSize="18" Width="30" TextAlignment="Center"/> 
+                                    <TextBlock Text="Hojas de cálculo" IsVisible="{Binding IsSidebarExpanded}"/>
                                 </StackPanel>
                             </Button>
 
@@ -111,5 +127,4 @@
             </Grid>
         </Border>
     </Grid>
-
 </Window>
