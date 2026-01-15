@@ -1,0 +1,88 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AvaloniaShareApp.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AvaloniaShareApp.Views.WordView"
+             x:DataType="vm:WordViewModel">
+  <Grid RowDefinitions="Auto, *">
+      
+      <!-- Top Section: Start New Document -->
+      <Border Grid.Row="0" Background="#F0F4F8" CornerRadius="12" Padding="20" Margin="0,0,0,15">
+          <StackPanel>
+              <TextBlock Text="Iniciar un nuevo documento" FontSize="15" Foreground="#444746" FontWeight="Medium" Margin="0,0,0,15"/>
+              
+              <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                  <StackPanel Orientation="Horizontal" Spacing="15">
+                      <!-- New Blank Doc Card -->
+                      <Button Background="Transparent" Padding="0" BorderThickness="0"
+                              Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).NavigateCommand}"
+                              CommandParameter="Editor">
+                          <StackPanel Spacing="8">
+                              <Border Width="100" Height="130" Background="White" CornerRadius="6"
+                                      HorizontalAlignment="Center" VerticalAlignment="Center">
+                                  <TextBlock Text="+" FontSize="36" Foreground="#EA4335" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                              </Border>
+                              <TextBlock Text="En blanco" FontSize="12" Foreground="#202124" FontWeight="Medium" HorizontalAlignment="Center"/>
+                          </StackPanel>
+                      </Button>
+
+                      <!-- Template 1 -->
+                      <Button Background="Transparent" Padding="0" BorderThickness="0">
+                          <StackPanel Spacing="8">
+                              <Border Width="100" Height="130" Background="White" CornerRadius="6">
+                                  <TextBlock Text="CV" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#BDBDBD" FontSize="14"/>
+                              </Border>
+                              <TextBlock Text="Curriculum" FontSize="12" Foreground="#202124" FontWeight="Medium" HorizontalAlignment="Center"/>
+                          </StackPanel>
+                      </Button>
+                      
+                      <!-- Template 2 -->
+                      <Button Background="Transparent" Padding="0" BorderThickness="0">
+                          <StackPanel Spacing="8">
+                              <Border Width="100" Height="130" Background="White" CornerRadius="6">
+                                  <TextBlock Text="Carta" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#BDBDBD" FontSize="14"/>
+                              </Border>
+                              <TextBlock Text="Carta" FontSize="12" Foreground="#202124" FontWeight="Medium" HorizontalAlignment="Center"/>
+                          </StackPanel>
+                      </Button>
+                  </StackPanel>
+              </ScrollViewer>
+          </StackPanel>
+      </Border>
+
+      <!-- Bottom Section: Recent Documents -->
+      <Grid Grid.Row="1" RowDefinitions="Auto, *">
+          <TextBlock Grid.Row="0" Text="Documentos recientes" FontSize="15" FontWeight="SemiBold" Foreground="#444746" Margin="0,0,0,12"/>
+          
+          <ScrollViewer Grid.Row="1">
+              <ItemsControl ItemsSource="{Binding RecentDocuments}">
+                  <ItemsControl.ItemsPanel>
+                      <ItemsPanelTemplate>
+                          <WrapPanel />
+                      </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                           <Border Width="160" Background="White" CornerRadius="8" Margin="0,0,12,12">
+                               <StackPanel>
+                                   <!-- Thumbnail Placeholder -->
+                                   <Border Height="90" Background="#F8F9FA" CornerRadius="8,8,0,0">
+                                       <TextBlock Text="{Binding Icon}" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                   </Border>
+                                   <!-- Info -->
+                                   <StackPanel Margin="10,8">
+                                       <TextBlock Text="{Binding Title}" FontWeight="Medium" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                       <TextBlock Text="{Binding LastOpened, StringFormat='Abierto {0:dd MMM}'}" FontSize="11" Foreground="#5F6368" Margin="0,4,0,0"/>
+                                   </StackPanel>
+                               </StackPanel>
+                           </Border>
+                      </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+              </ItemsControl>
+          </ScrollViewer>
+      </Grid>
+      
+  </Grid>
+</UserControl>

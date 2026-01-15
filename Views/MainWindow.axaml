@@ -1,0 +1,115 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaShareApp.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        x:Class="AvaloniaShareApp.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AvaloniaShareApp"
+        Width="1000" Height="650"
+        WindowStartupLocation="CenterScreen"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        TransparencyLevelHint="Mica"
+        Background="Transparent">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <!-- Root Grid for overlaying window controls -->
+    <Grid>
+        <!-- Main Container with Rounded Corners -->
+        <Border CornerRadius="20" Background="#FFFFFF" Margin="10" BoxShadow="0 4 15 0 #20000000">
+            <Grid RowDefinitions="40, *">
+                
+                <!-- Header Row with Window Controls -->
+                <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="15,5,15,0">
+                    <!-- Drag area -->
+                    <Border Grid.Column="0" Background="Transparent"/>
+                    
+                    <!-- Window Control Buttons -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+                        <Button x:Name="MinimizeButton" Width="28" Height="28" 
+                                Background="Transparent" CornerRadius="14"
+                                ToolTip.Tip="Minimizar">
+                            <TextBlock Text="—" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#5F6368"/>
+                        </Button>
+                        <Button x:Name="MaximizeButton" Width="28" Height="28" 
+                                Background="Transparent" CornerRadius="14"
+                                ToolTip.Tip="Maximizar">
+                            <TextBlock Text="☐" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#5F6368"/>
+                        </Button>
+                        <Button x:Name="CloseButton" Width="28" Height="28" 
+                                Background="Transparent" CornerRadius="14"
+                                ToolTip.Tip="Cerrar">
+                            <TextBlock Text="✕" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#5F6368"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                
+                <!-- Main Content Row -->
+                <Grid Grid.Row="1" ColumnDefinitions="240, *">
+                    
+                    <!-- Sidebar -->
+                    <Border Grid.Column="0" Background="#F8FAFD" CornerRadius="0,0,0,20" Padding="15">
+                        <StackPanel Spacing="5">
+                            <!-- Logo / App Name -->
+                            <StackPanel Orientation="Horizontal" Spacing="10" Margin="10,10,10,20">
+                                <TextBlock Text="Drive Share" FontSize="20" FontWeight="SemiBold" Foreground="#444746"/>
+                            </StackPanel>
+
+                            <!-- Main Navigation -->
+                            <Button Command="{Binding NavigateCommand}" CommandParameter="Dashboard" Classes="NavButton">
+                                <StackPanel Orientation="Horizontal" Spacing="15">
+                                    <TextBlock Text="🏠"/> 
+                                    <TextBlock Text="Mi unidad"/>
+                                </StackPanel>
+                            </Button>
+                            
+                            <Button Command="{Binding NavigateCommand}" CommandParameter="Share" Classes="NavButton">
+                                <StackPanel Orientation="Horizontal" Spacing="15">
+                                    <TextBlock Text="👥"/> 
+                                    <TextBlock Text="Compartidos conmigo"/>
+                                </StackPanel>
+                            </Button>
+                            
+                            <Button Command="{Binding NavigateCommand}" CommandParameter="Trash" Classes="NavButton">
+                                <StackPanel Orientation="Horizontal" Spacing="15">
+                                    <TextBlock Text="🗑️"/> 
+                                    <TextBlock Text="Papelera"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Separator Margin="0,10" Background="#E0E0E0" Height="1"/>
+
+                            <!-- Apps Section -->
+                            <Button Command="{Binding NavigateCommand}" CommandParameter="Word" Classes="NavButton">
+                                <StackPanel Orientation="Horizontal" Spacing="15">
+                                    <TextBlock Text="📝"/> 
+                                    <TextBlock Text="Hoja de documento"/>
+                                </StackPanel>
+                            </Button>
+                            
+                            <Button Command="{Binding NavigateCommand}" CommandParameter="Excel" Classes="NavButton">
+                                <StackPanel Orientation="Horizontal" Spacing="15">
+                                    <TextBlock Text="📊"/> 
+                                    <TextBlock Text="Hoja sheet"/>
+                                </StackPanel>
+                            </Button>
+
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Content Area -->
+                    <Border Grid.Column="1" Background="White" CornerRadius="0,0,20,0" Padding="20">
+                        <ContentControl Content="{Binding CurrentPage}"/>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+
+</Window>

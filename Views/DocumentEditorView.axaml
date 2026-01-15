@@ -1,0 +1,202 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AvaloniaShareApp.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
+             x:Class="AvaloniaShareApp.Views.DocumentEditorView"
+             x:DataType="vm:DocumentEditorViewModel">
+             
+  <Grid RowDefinitions="Auto, Auto, Auto, *, Auto" Background="#FAFAFA">
+      
+      <!-- Top Bar: Document Title -->
+      <Border Grid.Row="0" Background="#FAFAFA" Padding="20,12">
+          <StackPanel Orientation="Horizontal" Spacing="12">
+              <Border Width="36" Height="36" CornerRadius="8" Background="#4285F4">
+                  <TextBlock Text="📄" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+              </Border>
+              <TextBox Text="{Binding DocumentTitle}" 
+                       FontSize="17" FontWeight="Medium" 
+                       Background="Transparent" BorderThickness="0"
+                       Foreground="#202124"
+                       MinWidth="280" VerticalAlignment="Center"/>
+          </StackPanel>
+      </Border>
+      
+      <!-- Tab Navigation -->
+      <Border Grid.Row="1" Background="#FAFAFA" Padding="20,0,20,8">
+          <StackPanel Orientation="Horizontal" Spacing="5">
+              <Border Background="#E8F0FE" CornerRadius="20" Padding="14,6">
+                  <TextBlock Text="Inicio" Foreground="#1A73E8" FontWeight="SemiBold" FontSize="12"/>
+              </Border>
+              <Button Background="Transparent" Padding="14,6" CornerRadius="20">
+                  <TextBlock Text="Insertar" Foreground="#5F6368" FontSize="12"/>
+              </Button>
+              <Button Background="Transparent" Padding="14,6" CornerRadius="20">
+                  <TextBlock Text="Formato" Foreground="#5F6368" FontSize="12"/>
+              </Button>
+              <Button Background="Transparent" Padding="14,6" CornerRadius="20">
+                  <TextBlock Text="Herramientas" Foreground="#5F6368" FontSize="12"/>
+              </Button>
+          </StackPanel>
+      </Border>
+      
+      <!-- Toolbar Ribbon -->
+      <Border Grid.Row="2" Background="White" Padding="10,8" CornerRadius="8" Margin="10,0,10,6">
+          <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+              <StackPanel Orientation="Horizontal" Spacing="10">
+                  
+                  <!-- Font Group -->
+                  <Border Background="#F1F3F4" CornerRadius="6" Padding="6,4">
+                      <StackPanel Orientation="Horizontal" Spacing="6">
+                          <ComboBox x:Name="FontFamilyCombo" Width="100" Height="28" CornerRadius="4" Background="White" FontSize="11">
+                              <ComboBoxItem Content="Calibri" IsSelected="True"/>
+                              <ComboBoxItem Content="Arial"/>
+                              <ComboBoxItem Content="Times New Roman"/>
+                              <ComboBoxItem Content="Verdana"/>
+                              <ComboBoxItem Content="Georgia"/>
+                          </ComboBox>
+                          <ComboBox x:Name="FontSizeCombo" Width="50" Height="28" CornerRadius="4" Background="White" FontSize="11">
+                              <ComboBoxItem Content="10"/>
+                              <ComboBoxItem Content="11" IsSelected="True"/>
+                              <ComboBoxItem Content="12"/>
+                              <ComboBoxItem Content="14"/>
+                              <ComboBoxItem Content="16"/>
+                              <ComboBoxItem Content="18"/>
+                              <ComboBoxItem Content="24"/>
+                              <ComboBoxItem Content="36"/>
+                          </ComboBox>
+                      </StackPanel>
+                  </Border>
+                  
+                  <!-- Text Styling Group -->
+                  <Border Background="#F1F3F4" CornerRadius="6" Padding="4">
+                      <StackPanel Orientation="Horizontal" Spacing="2">
+                          <Button x:Name="BoldButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Negrita (Ctrl+B)">
+                              <TextBlock Text="N" FontWeight="Bold" FontSize="13" Foreground="#202124"/>
+                          </Button>
+                          <Button x:Name="ItalicButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Cursiva (Ctrl+I)">
+                              <TextBlock Text="K" FontStyle="Italic" FontSize="13" Foreground="#202124"/>
+                          </Button>
+                          <Button x:Name="UnderlineButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Subrayado (Ctrl+U)">
+                              <TextBlock Text="S" TextDecorations="Underline" FontSize="13" Foreground="#202124"/>
+                          </Button>
+                          <Button x:Name="StrikethroughButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Tachado">
+                              <TextBlock Text="ab" FontSize="10" TextDecorations="Strikethrough" Foreground="#202124"/>
+                          </Button>
+                      </StackPanel>
+                  </Border>
+
+                  <!-- Color Group -->
+                  <Border Background="#F1F3F4" CornerRadius="6" Padding="4">
+                      <StackPanel Orientation="Horizontal" Spacing="2">
+                          <Button x:Name="TextColorButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Color de texto">
+                              <StackPanel Spacing="1">
+                                  <TextBlock Text="A" FontSize="12" FontWeight="Bold" Foreground="#202124" HorizontalAlignment="Center"/>
+                                  <Border Height="3" Width="14" Background="#EA4335" CornerRadius="1"/>
+                              </StackPanel>
+                          </Button>
+                          <Button x:Name="HighlightButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Resaltar">
+                              <StackPanel Spacing="1">
+                                  <TextBlock Text="ab" FontSize="10" Foreground="#202124" HorizontalAlignment="Center"/>
+                                  <Border Height="3" Width="14" Background="#FBBC04" CornerRadius="1"/>
+                              </StackPanel>
+                          </Button>
+                      </StackPanel>
+                  </Border>
+                  
+                  <!-- Alignment Group -->
+                  <Border Background="#F1F3F4" CornerRadius="6" Padding="4">
+                      <StackPanel Orientation="Horizontal" Spacing="2">
+                          <Button x:Name="AlignLeftButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Alinear izquierda">
+                              <TextBlock Text="≡" FontSize="14" Foreground="#202124"/>
+                          </Button>
+                          <Button x:Name="AlignCenterButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Centrar">
+                              <TextBlock Text="☰" FontSize="12" Foreground="#202124"/>
+                          </Button>
+                          <Button x:Name="AlignRightButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Alinear derecha">
+                              <TextBlock Text="≡" FontSize="14" Foreground="#202124"/>
+                          </Button>
+                          <Button x:Name="JustifyButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Justificar">
+                              <TextBlock Text="≣" FontSize="14" Foreground="#202124"/>
+                          </Button>
+                      </StackPanel>
+                  </Border>
+                  
+                  <!-- Indent Group -->
+                  <Border Background="#F1F3F4" CornerRadius="6" Padding="4">
+                      <StackPanel Orientation="Horizontal" Spacing="2">
+                          <Button x:Name="DecreaseIndentButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Reducir sangría">
+                              <TextBlock Text="⇤" FontSize="14" Foreground="#202124"/>
+                          </Button>
+                          <Button x:Name="IncreaseIndentButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Aumentar sangría">
+                              <TextBlock Text="⇥" FontSize="14" Foreground="#202124"/>
+                          </Button>
+                      </StackPanel>
+                  </Border>
+                  
+                  <!-- List Group -->
+                  <Border Background="#F1F3F4" CornerRadius="6" Padding="4">
+                      <StackPanel Orientation="Horizontal" Spacing="2">
+                          <Button x:Name="BulletListButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Lista con viñetas">
+                              <TextBlock Text="•" FontSize="16" Foreground="#202124"/>
+                          </Button>
+                          <Button x:Name="NumberedListButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Lista numerada">
+                              <TextBlock Text="1." FontSize="11" FontWeight="Medium" Foreground="#202124"/>
+                          </Button>
+                      </StackPanel>
+                  </Border>
+
+                  <!-- Insert Group -->
+                  <Border Background="#F1F3F4" CornerRadius="6" Padding="4">
+                      <StackPanel Orientation="Horizontal" Spacing="2">
+                          <Button Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Insertar enlace">
+                              <TextBlock Text="🔗" FontSize="12"/>
+                          </Button>
+                          <Button Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Insertar imagen">
+                              <TextBlock Text="🖼" FontSize="12"/>
+                          </Button>
+                      </StackPanel>
+                  </Border>
+                  
+              </StackPanel>
+          </ScrollViewer>
+      </Border>
+      
+      <!-- Document Canvas with RichTextBox -->
+      <Border Grid.Row="3" Background="#E8EAED" Padding="15">
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+              <Border Background="White" CornerRadius="4" 
+                      HorizontalAlignment="Stretch" 
+                      MaxWidth="816" MinHeight="500"
+                      Padding="50,60">
+                  <TextBox x:Name="Editor"
+                           Text="{Binding DocumentContent}"
+                           AcceptsReturn="True"
+                           TextWrapping="Wrap"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           FontFamily="Calibri"
+                           FontSize="12"
+                           VerticalAlignment="Stretch"
+                           HorizontalAlignment="Stretch"/>
+              </Border>
+          </ScrollViewer>
+      </Border>
+      
+      <!-- Status Bar -->
+      <Border Grid.Row="4" Background="#FAFAFA" Padding="20,6" BorderThickness="0,1,0,0" BorderBrush="#E0E0E0">
+          <Grid ColumnDefinitions="*, Auto">
+              <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="25">
+                  <TextBlock Text="Página 1 de 1" FontSize="11" Foreground="#5F6368"/>
+                  <TextBlock Text="0 palabras" FontSize="11" Foreground="#5F6368"/>
+              </StackPanel>
+              <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15">
+                  <TextBlock Text="100%" FontSize="11" Foreground="#5F6368"/>
+                  <TextBlock Text="Español" FontSize="11" Foreground="#5F6368"/>
+              </StackPanel>
+          </Grid>
+      </Border>
+      
+  </Grid>
+</UserControl>
