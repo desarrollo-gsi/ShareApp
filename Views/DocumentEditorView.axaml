@@ -3,9 +3,40 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:AvaloniaShareApp.ViewModels"
+             xmlns:controls="clr-namespace:AvaloniaShareApp.Controls"
              mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
              x:Class="AvaloniaShareApp.Views.DocumentEditorView"
              x:DataType="vm:DocumentEditorViewModel">
+             
+  <UserControl.Styles>
+      <Style Selector="Button.ColorBtn">
+          <Setter Property="Width" Value="20"/>
+          <Setter Property="Height" Value="20"/>
+          <Setter Property="Margin" Value="1"/>
+          <Setter Property="Padding" Value="0"/>
+          <Setter Property="CornerRadius" Value="3"/>
+          <Setter Property="BorderThickness" Value="1"/>
+          <Setter Property="BorderBrush" Value="#DDDDDD"/>
+          <Setter Property="Focusable" Value="False"/>
+      </Style>
+      <Style Selector="Button.ColorBtn">
+          <Setter Property="Template">
+              <ControlTemplate>
+                  <Border Background="{TemplateBinding Tag}" 
+                          CornerRadius="3" 
+                          BorderThickness="1" 
+                          BorderBrush="#CCCCCC"
+                          Width="18" Height="18">
+                      <Border.Styles>
+                          <Style Selector="Border:pointerover">
+                              <Setter Property="BorderBrush" Value="#666666"/>
+                          </Style>
+                      </Border.Styles>
+                  </Border>
+              </ControlTemplate>
+          </Setter>
+      </Style>
+  </UserControl.Styles>
              
   <Grid RowDefinitions="Auto, Auto, Auto, *, Auto" Background="#FAFAFA">
       
@@ -35,9 +66,6 @@
               <Button Background="Transparent" Padding="14,6" CornerRadius="20">
                   <TextBlock Text="Formato" Foreground="#5F6368" FontSize="12"/>
               </Button>
-              <Button Background="Transparent" Padding="14,6" CornerRadius="20">
-                  <TextBlock Text="Herramientas" Foreground="#5F6368" FontSize="12"/>
-              </Button>
           </StackPanel>
       </Border>
       
@@ -49,22 +77,33 @@
                   <!-- Font Group -->
                   <Border Background="#F1F3F4" CornerRadius="6" Padding="6,4">
                       <StackPanel Orientation="Horizontal" Spacing="6">
-                          <ComboBox x:Name="FontFamilyCombo" Width="100" Height="28" CornerRadius="4" Background="White" FontSize="11">
-                              <ComboBoxItem Content="Calibri" IsSelected="True"/>
-                              <ComboBoxItem Content="Arial"/>
-                              <ComboBoxItem Content="Times New Roman"/>
-                              <ComboBoxItem Content="Verdana"/>
-                              <ComboBoxItem Content="Georgia"/>
+                          <ComboBox x:Name="FontFamilyCombo" Width="140" Height="28" CornerRadius="4" Background="White" FontSize="11" SelectedIndex="0">
+                              <ComboBoxItem Content="Calibri" Tag="Calibri" FontFamily="Calibri"/>
+                              <ComboBoxItem Content="Arial" Tag="Arial" FontFamily="Arial"/>
+                              <ComboBoxItem Content="Times New Roman" Tag="Times New Roman" FontFamily="Times New Roman"/>
+                              <ComboBoxItem Content="Verdana" Tag="Verdana" FontFamily="Verdana"/>
+                              <ComboBoxItem Content="Georgia" Tag="Georgia" FontFamily="Georgia"/>
+                              <ComboBoxItem Content="Segoe UI" Tag="Segoe UI" FontFamily="Segoe UI"/>
+                              <ComboBoxItem Content="Consolas" Tag="Consolas" FontFamily="Consolas"/>
+                              <ComboBoxItem Content="Courier New" Tag="Courier New" FontFamily="Courier New"/>
+                              <ComboBoxItem Content="Tahoma" Tag="Tahoma" FontFamily="Tahoma"/>
+                              <ComboBoxItem Content="Trebuchet MS" Tag="Trebuchet MS" FontFamily="Trebuchet MS"/>
                           </ComboBox>
-                          <ComboBox x:Name="FontSizeCombo" Width="50" Height="28" CornerRadius="4" Background="White" FontSize="11">
-                              <ComboBoxItem Content="10"/>
-                              <ComboBoxItem Content="11" IsSelected="True"/>
-                              <ComboBoxItem Content="12"/>
-                              <ComboBoxItem Content="14"/>
-                              <ComboBoxItem Content="16"/>
-                              <ComboBoxItem Content="18"/>
-                              <ComboBoxItem Content="24"/>
-                              <ComboBoxItem Content="36"/>
+                          <ComboBox x:Name="FontSizeCombo" Width="55" Height="28" CornerRadius="4" Background="White" FontSize="11" SelectedIndex="3">
+                              <ComboBoxItem Content="8" Tag="8"/>
+                              <ComboBoxItem Content="9" Tag="9"/>
+                              <ComboBoxItem Content="10" Tag="10"/>
+                              <ComboBoxItem Content="11" Tag="11"/>
+                              <ComboBoxItem Content="12" Tag="12"/>
+                              <ComboBoxItem Content="14" Tag="14"/>
+                              <ComboBoxItem Content="16" Tag="16"/>
+                              <ComboBoxItem Content="18" Tag="18"/>
+                              <ComboBoxItem Content="20" Tag="20"/>
+                              <ComboBoxItem Content="24" Tag="24"/>
+                              <ComboBoxItem Content="28" Tag="28"/>
+                              <ComboBoxItem Content="36" Tag="36"/>
+                              <ComboBoxItem Content="48" Tag="48"/>
+                              <ComboBoxItem Content="72" Tag="72"/>
                           </ComboBox>
                       </StackPanel>
                   </Border>
@@ -72,90 +111,223 @@
                   <!-- Text Styling Group -->
                   <Border Background="#F1F3F4" CornerRadius="6" Padding="4">
                       <StackPanel Orientation="Horizontal" Spacing="2">
-                          <Button x:Name="BoldButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Negrita (Ctrl+B)">
+                          <ToggleButton x:Name="BoldButton" Width="30" Height="30" CornerRadius="4" ToolTip.Tip="Negrita (Ctrl+B)" Focusable="False">
+                              <ToggleButton.Styles>
+                                  <Style Selector="ToggleButton">
+                                      <Setter Property="Background" Value="Transparent"/>
+                                  </Style>
+                                  <Style Selector="ToggleButton:checked">
+                                      <Setter Property="Background" Value="#D3E3FD"/>
+                                  </Style>
+                                  <Style Selector="ToggleButton:pointerover">
+                                      <Setter Property="Background" Value="#E8EAED"/>
+                                  </Style>
+                              </ToggleButton.Styles>
                               <TextBlock Text="N" FontWeight="Bold" FontSize="13" Foreground="#202124"/>
-                          </Button>
-                          <Button x:Name="ItalicButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Cursiva (Ctrl+I)">
+                          </ToggleButton>
+                          <ToggleButton x:Name="ItalicButton" Width="30" Height="30" CornerRadius="4" ToolTip.Tip="Cursiva (Ctrl+I)" Focusable="False">
+                              <ToggleButton.Styles>
+                                  <Style Selector="ToggleButton">
+                                      <Setter Property="Background" Value="Transparent"/>
+                                  </Style>
+                                  <Style Selector="ToggleButton:checked">
+                                      <Setter Property="Background" Value="#D3E3FD"/>
+                                  </Style>
+                                  <Style Selector="ToggleButton:pointerover">
+                                      <Setter Property="Background" Value="#E8EAED"/>
+                                  </Style>
+                              </ToggleButton.Styles>
                               <TextBlock Text="K" FontStyle="Italic" FontSize="13" Foreground="#202124"/>
-                          </Button>
-                          <Button x:Name="UnderlineButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Subrayado (Ctrl+U)">
+                          </ToggleButton>
+                          <ToggleButton x:Name="UnderlineButton" Width="30" Height="30" CornerRadius="4" ToolTip.Tip="Subrayado (Ctrl+U)" Focusable="False">
+                              <ToggleButton.Styles>
+                                  <Style Selector="ToggleButton">
+                                      <Setter Property="Background" Value="Transparent"/>
+                                  </Style>
+                                  <Style Selector="ToggleButton:checked">
+                                      <Setter Property="Background" Value="#D3E3FD"/>
+                                  </Style>
+                                  <Style Selector="ToggleButton:pointerover">
+                                      <Setter Property="Background" Value="#E8EAED"/>
+                                  </Style>
+                              </ToggleButton.Styles>
                               <TextBlock Text="S" TextDecorations="Underline" FontSize="13" Foreground="#202124"/>
-                          </Button>
-                          <Button x:Name="StrikethroughButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Tachado">
+                          </ToggleButton>
+                          <ToggleButton x:Name="StrikethroughButton" Width="30" Height="30" CornerRadius="4" ToolTip.Tip="Tachado" Focusable="False">
+                              <ToggleButton.Styles>
+                                  <Style Selector="ToggleButton">
+                                      <Setter Property="Background" Value="Transparent"/>
+                                  </Style>
+                                  <Style Selector="ToggleButton:checked">
+                                      <Setter Property="Background" Value="#D3E3FD"/>
+                                  </Style>
+                                  <Style Selector="ToggleButton:pointerover">
+                                      <Setter Property="Background" Value="#E8EAED"/>
+                                  </Style>
+                              </ToggleButton.Styles>
                               <TextBlock Text="ab" FontSize="10" TextDecorations="Strikethrough" Foreground="#202124"/>
-                          </Button>
+                          </ToggleButton>
                       </StackPanel>
                   </Border>
 
-                  <!-- Color Group -->
+                  <!-- Text Color Picker -->
                   <Border Background="#F1F3F4" CornerRadius="6" Padding="4">
-                      <StackPanel Orientation="Horizontal" Spacing="2">
-                          <Button x:Name="TextColorButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Color de texto">
-                              <StackPanel Spacing="1">
-                                  <TextBlock Text="A" FontSize="12" FontWeight="Bold" Foreground="#202124" HorizontalAlignment="Center"/>
-                                  <Border Height="3" Width="14" Background="#EA4335" CornerRadius="1"/>
-                              </StackPanel>
-                          </Button>
-                          <Button x:Name="HighlightButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Resaltar">
-                              <StackPanel Spacing="1">
-                                  <TextBlock Text="ab" FontSize="10" Foreground="#202124" HorizontalAlignment="Center"/>
-                                  <Border Height="3" Width="14" Background="#FBBC04" CornerRadius="1"/>
-                              </StackPanel>
-                          </Button>
-                      </StackPanel>
+                      <DropDownButton Width="40" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Color de texto">
+                          <StackPanel Spacing="1">
+                              <TextBlock Text="A" FontSize="12" FontWeight="Bold" Foreground="#202124" HorizontalAlignment="Center"/>
+                              <Border x:Name="TextColorIndicator" Height="3" Width="14" Background="#EA4335" CornerRadius="1"/>
+                          </StackPanel>
+                          <DropDownButton.Flyout>
+                              <Flyout Placement="Bottom">
+                                  <Border Background="White" CornerRadius="8" Padding="10" BorderBrush="#E0E0E0" BorderThickness="1">
+                                      <StackPanel Spacing="8">
+                                          <TextBlock Text="Colores del tema" FontSize="11" Foreground="#5F6368"/>
+                                          <WrapPanel x:Name="TextColorPalette" ItemWidth="22" ItemHeight="22">
+                                              <Button Tag="#000000" Classes="ColorBtn"/><Button Tag="#434343" Classes="ColorBtn"/>
+                                              <Button Tag="#666666" Classes="ColorBtn"/><Button Tag="#999999" Classes="ColorBtn"/>
+                                              <Button Tag="#B7B7B7" Classes="ColorBtn"/><Button Tag="#CCCCCC" Classes="ColorBtn"/>
+                                              <Button Tag="#D9D9D9" Classes="ColorBtn"/><Button Tag="#EFEFEF" Classes="ColorBtn"/>
+                                              <Button Tag="#F3F3F3" Classes="ColorBtn"/><Button Tag="#FFFFFF" Classes="ColorBtn"/>
+                                              
+                                              <Button Tag="#980000" Classes="ColorBtn"/><Button Tag="#FF0000" Classes="ColorBtn"/>
+                                              <Button Tag="#FF9900" Classes="ColorBtn"/><Button Tag="#FFFF00" Classes="ColorBtn"/>
+                                              <Button Tag="#00FF00" Classes="ColorBtn"/><Button Tag="#00FFFF" Classes="ColorBtn"/>
+                                              <Button Tag="#4A86E8" Classes="ColorBtn"/><Button Tag="#0000FF" Classes="ColorBtn"/>
+                                              <Button Tag="#9900FF" Classes="ColorBtn"/><Button Tag="#FF00FF" Classes="ColorBtn"/>
+                                              
+                                              <Button Tag="#E6B8AF" Classes="ColorBtn"/><Button Tag="#F4CCCC" Classes="ColorBtn"/>
+                                              <Button Tag="#FCE5CD" Classes="ColorBtn"/><Button Tag="#FFF2CC" Classes="ColorBtn"/>
+                                              <Button Tag="#D9EAD3" Classes="ColorBtn"/><Button Tag="#D0E0E3" Classes="ColorBtn"/>
+                                              <Button Tag="#C9DAF8" Classes="ColorBtn"/><Button Tag="#CFE2F3" Classes="ColorBtn"/>
+                                              <Button Tag="#D9D2E9" Classes="ColorBtn"/><Button Tag="#EAD1DC" Classes="ColorBtn"/>
+                                          </WrapPanel>
+                                      </StackPanel>
+                                  </Border>
+                              </Flyout>
+                          </DropDownButton.Flyout>
+                      </DropDownButton>
                   </Border>
                   
+                  <!-- Highlight Color Picker -->
+                  <Border Background="#F1F3F4" CornerRadius="6" Padding="4">
+                      <DropDownButton Width="40" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Resaltar">
+                          <StackPanel Spacing="1">
+                              <TextBlock Text="ab" FontSize="10" Foreground="#202124" HorizontalAlignment="Center"/>
+                              <Border x:Name="HighlightColorIndicator" Height="3" Width="14" Background="#FBBC04" CornerRadius="1"/>
+                          </StackPanel>
+                          <DropDownButton.Flyout>
+                              <Flyout Placement="Bottom">
+                                  <Border Background="White" CornerRadius="8" Padding="10" BorderBrush="#E0E0E0" BorderThickness="1">
+                                      <StackPanel Spacing="8">
+                                          <TextBlock Text="Colores de resaltado" FontSize="11" Foreground="#5F6368"/>
+                                          <WrapPanel x:Name="HighlightColorPalette" ItemWidth="22" ItemHeight="22">
+                                              <Button Tag="Transparent" Classes="ColorBtn" ToolTip.Tip="Sin color"/>
+                                              <Button Tag="#FFFF00" Classes="ColorBtn"/><Button Tag="#00FF00" Classes="ColorBtn"/>
+                                              <Button Tag="#00FFFF" Classes="ColorBtn"/><Button Tag="#FF00FF" Classes="ColorBtn"/>
+                                              <Button Tag="#0000FF" Classes="ColorBtn"/><Button Tag="#FF0000" Classes="ColorBtn"/>
+                                              <Button Tag="#000080" Classes="ColorBtn"/><Button Tag="#008080" Classes="ColorBtn"/>
+                                              <Button Tag="#008000" Classes="ColorBtn"/>
+                                              
+                                              <Button Tag="#FFFFCC" Classes="ColorBtn"/><Button Tag="#CCFFCC" Classes="ColorBtn"/>
+                                              <Button Tag="#CCFFFF" Classes="ColorBtn"/><Button Tag="#FFCCFF" Classes="ColorBtn"/>
+                                              <Button Tag="#CCCCFF" Classes="ColorBtn"/><Button Tag="#FFCCCC" Classes="ColorBtn"/>
+                                              <Button Tag="#FFE599" Classes="ColorBtn"/><Button Tag="#B6D7A8" Classes="ColorBtn"/>
+                                              <Button Tag="#A2C4C9" Classes="ColorBtn"/><Button Tag="#D5A6BD" Classes="ColorBtn"/>
+                                          </WrapPanel>
+                                      </StackPanel>
+                                  </Border>
+                              </Flyout>
+                          </DropDownButton.Flyout>
+                      </DropDownButton>
+                  </Border>
+
                   <!-- Alignment Group -->
                   <Border Background="#F1F3F4" CornerRadius="6" Padding="4">
                       <StackPanel Orientation="Horizontal" Spacing="2">
-                          <Button x:Name="AlignLeftButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Alinear izquierda">
-                              <TextBlock Text="≡" FontSize="14" Foreground="#202124"/>
-                          </Button>
-                          <Button x:Name="AlignCenterButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Centrar">
-                              <TextBlock Text="☰" FontSize="12" Foreground="#202124"/>
-                          </Button>
-                          <Button x:Name="AlignRightButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Alinear derecha">
-                              <TextBlock Text="≡" FontSize="14" Foreground="#202124"/>
-                          </Button>
-                          <Button x:Name="JustifyButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Justificar">
-                              <TextBlock Text="≣" FontSize="14" Foreground="#202124"/>
-                          </Button>
-                      </StackPanel>
-                  </Border>
-                  
-                  <!-- Indent Group -->
-                  <Border Background="#F1F3F4" CornerRadius="6" Padding="4">
-                      <StackPanel Orientation="Horizontal" Spacing="2">
-                          <Button x:Name="DecreaseIndentButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Reducir sangría">
-                              <TextBlock Text="⇤" FontSize="14" Foreground="#202124"/>
-                          </Button>
-                          <Button x:Name="IncreaseIndentButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Aumentar sangría">
-                              <TextBlock Text="⇥" FontSize="14" Foreground="#202124"/>
-                          </Button>
-                      </StackPanel>
-                  </Border>
-                  
-                  <!-- List Group -->
-                  <Border Background="#F1F3F4" CornerRadius="6" Padding="4">
-                      <StackPanel Orientation="Horizontal" Spacing="2">
-                          <Button x:Name="BulletListButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Lista con viñetas">
-                              <TextBlock Text="•" FontSize="16" Foreground="#202124"/>
-                          </Button>
-                          <Button x:Name="NumberedListButton" Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Lista numerada">
-                              <TextBlock Text="1." FontSize="11" FontWeight="Medium" Foreground="#202124"/>
-                          </Button>
-                      </StackPanel>
-                  </Border>
-
-                  <!-- Insert Group -->
-                  <Border Background="#F1F3F4" CornerRadius="6" Padding="4">
-                      <StackPanel Orientation="Horizontal" Spacing="2">
-                          <Button Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Insertar enlace">
-                              <TextBlock Text="🔗" FontSize="12"/>
-                          </Button>
-                          <Button Width="30" Height="30" CornerRadius="4" Background="Transparent" ToolTip.Tip="Insertar imagen">
-                              <TextBlock Text="🖼" FontSize="12"/>
-                          </Button>
+                          <RadioButton x:Name="AlignLeftButton" GroupName="Alignment" Width="30" Height="30" Focusable="False" IsChecked="True">
+                              <RadioButton.Styles>
+                                  <Style Selector="RadioButton">
+                                      <Setter Property="Background" Value="Transparent"/>
+                                      <Setter Property="CornerRadius" Value="4"/>
+                                      <Setter Property="Padding" Value="0"/>
+                                      <Setter Property="Template">
+                                          <ControlTemplate>
+                                              <Border Background="{TemplateBinding Background}" CornerRadius="4" Width="30" Height="30">
+                                                  <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                              </Border>
+                                          </ControlTemplate>
+                                      </Setter>
+                                  </Style>
+                                  <Style Selector="RadioButton:checked">
+                                      <Setter Property="Background" Value="#D3E3FD"/>
+                                  </Style>
+                                  <Style Selector="RadioButton:pointerover">
+                                      <Setter Property="Background" Value="#E8EAED"/>
+                                  </Style>
+                              </RadioButton.Styles>
+                              <StackPanel VerticalAlignment="Center" Spacing="2">
+                                  <Border Height="2" Width="14" Background="#202124"/>
+                                  <Border Height="2" Width="10" Background="#202124" HorizontalAlignment="Left"/>
+                                  <Border Height="2" Width="14" Background="#202124"/>
+                                  <Border Height="2" Width="8" Background="#202124" HorizontalAlignment="Left"/>
+                              </StackPanel>
+                          </RadioButton>
+                          <RadioButton x:Name="AlignCenterButton" GroupName="Alignment" Width="30" Height="30" Focusable="False">
+                              <RadioButton.Styles>
+                                  <Style Selector="RadioButton">
+                                      <Setter Property="Background" Value="Transparent"/>
+                                      <Setter Property="CornerRadius" Value="4"/>
+                                      <Setter Property="Padding" Value="0"/>
+                                      <Setter Property="Template">
+                                          <ControlTemplate>
+                                              <Border Background="{TemplateBinding Background}" CornerRadius="4" Width="30" Height="30">
+                                                  <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                              </Border>
+                                          </ControlTemplate>
+                                      </Setter>
+                                  </Style>
+                                  <Style Selector="RadioButton:checked">
+                                      <Setter Property="Background" Value="#D3E3FD"/>
+                                  </Style>
+                                  <Style Selector="RadioButton:pointerover">
+                                      <Setter Property="Background" Value="#E8EAED"/>
+                                  </Style>
+                              </RadioButton.Styles>
+                              <StackPanel VerticalAlignment="Center" Spacing="2">
+                                  <Border Height="2" Width="14" Background="#202124"/>
+                                  <Border Height="2" Width="10" Background="#202124" HorizontalAlignment="Center"/>
+                                  <Border Height="2" Width="14" Background="#202124"/>
+                                  <Border Height="2" Width="8" Background="#202124" HorizontalAlignment="Center"/>
+                              </StackPanel>
+                          </RadioButton>
+                          <RadioButton x:Name="AlignRightButton" GroupName="Alignment" Width="30" Height="30" Focusable="False">
+                              <RadioButton.Styles>
+                                  <Style Selector="RadioButton">
+                                      <Setter Property="Background" Value="Transparent"/>
+                                      <Setter Property="CornerRadius" Value="4"/>
+                                      <Setter Property="Padding" Value="0"/>
+                                      <Setter Property="Template">
+                                          <ControlTemplate>
+                                              <Border Background="{TemplateBinding Background}" CornerRadius="4" Width="30" Height="30">
+                                                  <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                              </Border>
+                                          </ControlTemplate>
+                                      </Setter>
+                                  </Style>
+                                  <Style Selector="RadioButton:checked">
+                                      <Setter Property="Background" Value="#D3E3FD"/>
+                                  </Style>
+                                  <Style Selector="RadioButton:pointerover">
+                                      <Setter Property="Background" Value="#E8EAED"/>
+                                  </Style>
+                              </RadioButton.Styles>
+                              <StackPanel VerticalAlignment="Center" Spacing="2">
+                                  <Border Height="2" Width="14" Background="#202124"/>
+                                  <Border Height="2" Width="10" Background="#202124" HorizontalAlignment="Right"/>
+                                  <Border Height="2" Width="14" Background="#202124"/>
+                                  <Border Height="2" Width="8" Background="#202124" HorizontalAlignment="Right"/>
+                              </StackPanel>
+                          </RadioButton>
                       </StackPanel>
                   </Border>
                   
@@ -163,56 +335,54 @@
           </ScrollViewer>
       </Border>
       
-      <!-- Document Canvas with RichTextBox -->
+      <!-- Document Canvas with Multiple Pages -->
       <Border Grid.Row="3" Background="#F0F2F5" Padding="0,20,0,0">
           <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-              <StackPanel>
-                  <Border Background="White" 
-                          CornerRadius="2" 
-                          HorizontalAlignment="Center" 
-                          VerticalAlignment="Top"
-                          Width="816" MinHeight="1056"
-                          Margin="0,0,0,50"
-                          Padding="96"> <Border.Effect>
-                          <DropShadowEffect BlurRadius="10" Color="#99000000" Opacity="0.15" OffsetX="2" OffsetY="2"/>
-                      </Border.Effect>
-
-                     <TextBox x:Name="Editor"
-         Text="{Binding DocumentContent}"
-         AcceptsReturn="True"
-         TextWrapping="Wrap"
-         Background="Transparent"
-         BorderThickness="0"
-         FontFamily="{Binding SelectedFont}"
-         FontSize="{Binding SelectedFontSize}"
-         FontWeight="{Binding FontWeight}"
-         FontStyle="{Binding FontStyle}"
-         TextAlignment="{Binding TextAlignment}"
-         Foreground="{Binding TextColor}"
-         VerticalAlignment="Stretch"
-         HorizontalAlignment="Stretch">
-    <TextBox.Styles>
-        <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-        </Style>
-    </TextBox.Styles>
-</TextBox>
-                  </Border>
+              <StackPanel x:Name="PagesContainer" Spacing="30" HorizontalAlignment="Center" Margin="0,0,0,50">
+                  <!-- Pages will be added dynamically -->
               </StackPanel>
           </ScrollViewer>
       </Border>
       
       <!-- Status Bar -->
-      <Border Grid.Row="4" Background="#FAFAFA" Padding="20,6" BorderThickness="0,1,0,0" BorderBrush="#E0E0E0">
-          <Grid ColumnDefinitions="*, Auto">
-              <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="25">
-                  <TextBlock Text="Página 1 de 1" FontSize="11" Foreground="#5F6368"/>
-                  <TextBlock Text="0 palabras" FontSize="11" Foreground="#5F6368"/>
+      <Border Grid.Row="4" Background="#F3F3F3" Padding="12,4" BorderThickness="0,1,0,0" BorderBrush="#D0D0D0">
+          <Grid ColumnDefinitions="Auto, Auto, *, Auto, Auto">
+              <!-- Page Info -->
+              <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                  <TextBlock x:Name="PageInfoText" Text="Página 1 de 1" FontSize="11" Foreground="#444" VerticalAlignment="Center"/>
+                  <Border Width="1" Height="14" Background="#C0C0C0"/>
               </StackPanel>
-              <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15">
-                  <TextBlock Text="100%" FontSize="11" Foreground="#5F6368"/>
-                  <TextBlock Text="Español" FontSize="11" Foreground="#5F6368"/>
+              
+              <!-- Word Count -->
+              <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" Margin="8,0,0,0">
+                  <TextBlock x:Name="WordCountText" Text="0 palabras" FontSize="11" Foreground="#444" VerticalAlignment="Center"/>
+                  <Border Width="1" Height="14" Background="#C0C0C0"/>
+              </StackPanel>
+              
+              <!-- Language -->
+              <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="8,0,0,0">
+                  <TextBlock Text="Español (España)" FontSize="11" Foreground="#444" VerticalAlignment="Center"/>
+              </StackPanel>
+              
+              <!-- Zoom Controls -->
+              <StackPanel Grid.Column="4" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                  <Button x:Name="ZoomOutButton" Width="20" Height="20" Padding="0" Background="Transparent" 
+                          CornerRadius="2" ToolTip.Tip="Alejar" Focusable="False">
+                      <TextBlock Text="−" FontSize="14" FontWeight="Bold" Foreground="#666" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+                  </Button>
+                  
+                  <Slider x:Name="ZoomSlider" Width="100" Minimum="50" Maximum="200" Value="100" 
+                          VerticalAlignment="Center" Focusable="False"/>
+                  
+                  <Button x:Name="ZoomInButton" Width="20" Height="20" Padding="0" Background="Transparent" 
+                          CornerRadius="2" ToolTip.Tip="Acercar" Focusable="False">
+                      <TextBlock Text="+" FontSize="14" FontWeight="Bold" Foreground="#666" 
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+                  </Button>
+                  
+                  <TextBlock x:Name="ZoomPercentText" Text="100%" FontSize="11" Foreground="#444" 
+                             VerticalAlignment="Center" MinWidth="35" TextAlignment="Right"/>
               </StackPanel>
           </Grid>
       </Border>
