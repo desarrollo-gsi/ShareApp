@@ -1,0 +1,312 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:AvaloniaShareApp.Infrastructure.Ui.ViewModels"
+             xmlns:controls="using:AvaloniaShareApp.Infrastructure.Ui.Controls"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:Class="AvaloniaShareApp.Infrastructure.Ui.Views.ExcelView"
+             x:DataType="vm:ExcelViewModel"
+             Background="#F8F9FA">
+
+    <Grid>
+        <!-- DASHBOARD STATE -->
+        <ScrollViewer IsVisible="{Binding !IsEditorVisible}" Background="#F8F9FA">
+            <StackPanel Spacing="0">
+                <!-- Template Gallery Header -->
+                <Border Background="White" Padding="0,32,0,48" BorderThickness="0,0,0,1" BorderBrush="#E0E0E0">
+                    <StackPanel MaxWidth="1000" HorizontalAlignment="Center" Spacing="24">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <TextBlock Text="Crear una hoja de cálculo nueva" FontSize="16" Foreground="#202124" FontWeight="Medium"/>
+                            <Button Grid.Column="1" Content="Galería de plantillas" Background="Transparent" Foreground="#5F6368" FontSize="13"/>
+                        </Grid>
+                        
+                        <StackPanel Orientation="Horizontal" Spacing="24">
+                            <!-- Blank Template -->
+                            <StackPanel Spacing="12">
+                                <Button Command="{Binding CreateNewSpreadsheetCommand}" Padding="0" Background="Transparent" BorderThickness="0">
+                                    <Border Width="160" Height="200" Background="White" CornerRadius="4" BorderThickness="1" BorderBrush="#E0E0E0" BoxShadow="0 1 3 0 #10000000">
+                                        <TextBlock Text="+" FontSize="48" Foreground="#1A73E8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Button>
+                                <TextBlock Text="En blanco" FontSize="14" Foreground="#202124" HorizontalAlignment="Left" Margin="4,0"/>
+                            </StackPanel>
+
+                            <!-- Budget Template -->
+                            <StackPanel Spacing="12">
+                                <Button Padding="0" Background="Transparent" BorderThickness="0">
+                                    <Border Width="160" Height="200" Background="White" CornerRadius="4" BorderThickness="1" BorderBrush="#E0E0E0">
+                                        <StackPanel Spacing="12" Margin="12">
+                                            <Border Height="20" Background="#E6F4EA" CornerRadius="2"/>
+                                            <Border Height="10" Background="#F1F3F4" CornerRadius="2"/>
+                                            <Border Height="10" Background="#F1F3F4" CornerRadius="2"/>
+                                            <Grid ColumnDefinitions="*, *" Margin="0,12,0,0">
+                                                <Border Height="60" Background="#107C41" CornerRadius="2" Margin="0,0,4,0"/>
+                                                <Border Grid.Column="1" Height="40" Background="#E6F4EA" CornerRadius="2" VerticalAlignment="Bottom"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+                                </Button>
+                                <TextBlock Text="Presupuesto mensual" FontSize="14" Foreground="#202124" HorizontalAlignment="Left" Margin="4,0"/>
+                            </StackPanel>
+
+                            <!-- Calendar Template -->
+                            <StackPanel Spacing="12">
+                                <Button Padding="0" Background="Transparent" BorderThickness="0">
+                                    <Border Width="160" Height="200" Background="White" CornerRadius="4" BorderThickness="1" BorderBrush="#E0E0E0">
+                                        <Grid RowDefinitions="Auto, *" Margin="12">
+                                            <Border Height="15" Background="#1A73E8" CornerRadius="2" Margin="0,0,0,8"/>
+                                            <UniformGrid Grid.Row="1" Columns="7" Rows="5">
+                                                <Border Margin="1" Background="#F1F3F4" CornerRadius="1"/>
+                                                <Border Margin="1" Background="#F1F3F4" CornerRadius="1"/>
+                                                <Border Margin="1" Background="#F1F3F4" CornerRadius="1"/>
+                                                <Border Margin="1" Background="#F1F3F4" CornerRadius="1"/>
+                                                <Border Margin="1" Background="#F1F3F4" CornerRadius="1"/>
+                                                <Border Margin="1" Background="#F1F3F4" CornerRadius="1"/>
+                                                <Border Margin="1" Background="#F1F3F4" CornerRadius="1"/>
+                                            </UniformGrid>
+                                        </Grid>
+                                    </Border>
+                                </Button>
+                                <TextBlock Text="Planificación" FontSize="14" Foreground="#202124" HorizontalAlignment="Left" Margin="4,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Recent Files Section -->
+                <StackPanel MaxWidth="1000" HorizontalAlignment="Center" Spacing="24" Margin="0,32,0,0" Width="1000">
+                    <Grid ColumnDefinitions="*, Auto">
+                        <TextBlock Text="Hojas de cálculo recientes" FontSize="16" Foreground="#202124" FontWeight="Medium"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="16">
+                            <TextBox Text="{Binding SearchQuery}" Watermark="Buscar..." Width="250" Height="36" VerticalContentAlignment="Center" Padding="12,0" Background="White" BorderBrush="#E0E0E0"/>
+                            <Button Content="Propietario: Cualquiera" Background="Transparent" Foreground="#5F6368" FontSize="13"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <ItemsControl ItemsSource="{Binding RecentSpreadsheets}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Classes="DocGridBtn" Command="{Binding $parent[UserControl].((vm:ExcelViewModel)DataContext).LoadSpreadsheetCommand}" CommandParameter="{Binding Id}">
+                                    <Border Width="180" Margin="0,0,24,24" Background="White" BorderThickness="1" BorderBrush="#E0E0E0" CornerRadius="4" ClipToBounds="True">
+                                        <Grid RowDefinitions="*, Auto">
+                                            <Border Height="140" Background="#F8F9FA">
+                                                <TextBlock Text="📗" FontSize="48" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                            </Border>
+                                            <Border Grid.Row="1" Padding="12" Background="White" BorderThickness="0,1,0,0" BorderBrush="#E0E0E0">
+                                                <StackPanel Spacing="4">
+                                                    <TextBlock Text="{Binding Title}" FontSize="13" FontWeight="Medium" TextTrimming="CharacterEllipsis"/>
+                                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                                        <TextBlock Text="📗" FontSize="10" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{Binding UpdatedAt, StringFormat='dd MMM yyyy'}" FontSize="11" Foreground="#5F6368"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- EDITOR STATE -->
+        <Grid IsVisible="{Binding IsEditorVisible}" RowDefinitions="Auto, Auto, *, Auto">
+            <!-- Toolbar Section -->
+            <Border Grid.Row="0" Background="White" Height="64" Padding="16,0" BorderThickness="0,0,0,1" BorderBrush="#E0E0E0">
+                <Grid ColumnDefinitions="Auto, *, Auto">
+                    <StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center">
+                        <Button Command="{Binding GoBackToDashboardCommand}" Background="Transparent" Padding="8">
+                            <TextBlock Text="←" FontSize="20" Foreground="#5F6368"/>
+                        </Button>
+                        <TextBlock Text="📗" FontSize="20" VerticalAlignment="Center"/>
+                        <StackPanel Spacing="2">
+                            <TextBox Text="{Binding SpreadsheetTitle}" Width="300" BorderThickness="0" Background="Transparent" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" Padding="0"/>
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <TextBlock Text="Archivo" FontSize="12" Foreground="#5F6368"/>
+                                <TextBlock Text="Editar" FontSize="12" Foreground="#5F6368"/>
+                                <TextBlock Text="Ver" FontSize="12" Foreground="#5F6368"/>
+                                <TextBlock Text="Insertar" FontSize="12" Foreground="#5F6368"/>
+                                <TextBlock Text="Formato" FontSize="12" Foreground="#5F6368"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+                        <Button Command="{Binding SaveSpreadsheetCommand}" Content="Guardar" Background="Transparent" BorderBrush="#1A73E8" BorderThickness="1" Foreground="#1A73E8" Padding="16,8" CornerRadius="4"/>
+                        <Button Content="Compartir" Background="#1A73E8" Foreground="White" Padding="24,10" CornerRadius="4" FontWeight="SemiBold"/>
+                        <Border Width="38" Height="38" CornerRadius="19" Background="#107C41">
+                            <TextBlock Text="H" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Formatting Bar -->
+            <Border Grid.Row="1" Background="White" Height="44" Padding="12,0" BorderThickness="0,0,0,1" BorderBrush="#E0E0E0">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                    <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+                        <!-- History & Print -->
+                        <Button Classes="FormatBtn" Content="↶" ToolTip.Tip="Deshacer (Ctrl+Z)"/>
+                        <Button Classes="FormatBtn" Content="↷" ToolTip.Tip="Rehacer (Ctrl+Y)"/>
+                        <Button Classes="FormatBtn" Content="🖨️" ToolTip.Tip="Imprimir (Ctrl+P)"/>
+                        <Button Classes="FormatBtn" Content="🖌️" ToolTip.Tip="Copiar formato"/>
+                        <Separator Width="1" Height="20" Background="#E0E0E0" Margin="4,0"/>
+
+                        <!-- Zoom -->
+                        <ComboBox SelectedIndex="0" Width="85" Height="30" Background="Transparent" BorderThickness="0" ToolTip.Tip="Zoom">
+                            <ComboBoxItem>100%</ComboBoxItem>
+                            <ComboBoxItem>125%</ComboBoxItem>
+                            <ComboBoxItem>150%</ComboBoxItem>
+                        </ComboBox>
+                        <Separator Width="1" Height="20" Background="#E0E0E0" Margin="4,0"/>
+
+                        <!-- Number Formats -->
+                        <Button x:Name="CurrencyBtn" Click="OnCurrencyClick" Classes="FormatBtn" Content="$" ToolTip.Tip="Formatear como moneda"/>
+                        <Button x:Name="PercentBtn" Click="OnPercentClick" Classes="FormatBtn" Content="%" ToolTip.Tip="Formatear como porcentaje"/>
+                        <Button Classes="FormatBtn" Content=".00←" FontSize="10" ToolTip.Tip="Reducir decimales"/>
+                        <Button Classes="FormatBtn" Content=".00→" FontSize="10" ToolTip.Tip="Aumentar decimales"/>
+                        <ComboBox SelectedIndex="0" Width="65" Height="30" Background="Transparent" BorderThickness="0" ToolTip.Tip="Más formatos">
+                            <ComboBoxItem>123</ComboBoxItem>
+                        </ComboBox>
+                        <Separator Width="1" Height="20" Background="#E0E0E0" Margin="4,0"/>
+
+                        <!-- Font -->
+                        <ComboBox SelectedIndex="0" Width="110" Height="30" Background="Transparent" BorderThickness="0" ToolTip.Tip="Fuente">
+                            <ComboBoxItem>Arial</ComboBoxItem>
+                            <ComboBoxItem>Roboto</ComboBoxItem>
+                            <ComboBoxItem>Inter</ComboBoxItem>
+                        </ComboBox>
+                        <Separator Width="1" Height="20" Background="#E0E0E0" Margin="4,0"/>
+
+                        <!-- Font Size -->
+                        <Button Classes="FormatBtn" Content="-" ToolTip.Tip="Reducir tamaño"/>
+                        <TextBox Text="11" Width="40" Height="30" Background="Transparent" BorderThickness="1" BorderBrush="#E0E0E0" CornerRadius="4" TextAlignment="Center" VerticalContentAlignment="Center" Padding="0"/>
+                        <Button Classes="FormatBtn" Content="+" ToolTip.Tip="Aumentar tamaño"/>
+                        <Separator Width="1" Height="20" Background="#E0E0E0" Margin="4,0"/>
+
+                        <!-- Font Styles -->
+                        <Button x:Name="BoldBtn" Click="OnBoldClick" Classes="FormatBtn" Content="B" FontWeight="Bold" ToolTip.Tip="Negrita (Ctrl+B)"/>
+                        <Button x:Name="ItalicBtn" Click="OnItalicClick" Classes="FormatBtn" Content="I" FontStyle="Italic" ToolTip.Tip="Cursiva (Ctrl+I)"/>
+                        <Button Classes="FormatBtn" ToolTip.Tip="Tachado (Alt+Shift+5)"><TextBlock Text="S" TextDecorations="Strikethrough"/></Button>
+                        <Button Classes="FormatBtn" Content="A" Foreground="#1A73E8" FontWeight="Bold" ToolTip.Tip="Color de texto"/>
+                        <Button x:Name="FillColorBtn" Click="OnFillColorClick" Classes="FormatBtn" Content="🎨" ToolTip.Tip="Color de relleno"/>
+                        <Separator Width="1" Height="20" Background="#E0E0E0" Margin="4,0"/>
+
+                        <!-- Borders and Merging -->
+                        <Button Classes="FormatBtn" Content="⊞" FontSize="16" ToolTip.Tip="Bordes"/>
+                        <Button Classes="FormatBtn" Content="⬌" FontSize="14" ToolTip.Tip="Combinar celdas"/>
+                        <Separator Width="1" Height="20" Background="#E0E0E0" Margin="4,0"/>
+                        
+                        <!-- Alignment Group -->
+                        <Button x:Name="AlignLeftBtn" Click="OnAlignLeftClick" Classes="FormatBtn" Content="≡" HorizontalContentAlignment="Left" ToolTip.Tip="Alinear a la izquierda"/>
+                        <Button x:Name="AlignCenterBtn" Click="OnAlignCenterClick" Classes="FormatBtn" Content="≡" HorizontalContentAlignment="Center" ToolTip.Tip="Alinear al centro"/>
+                        <Button x:Name="AlignRightBtn" Click="OnAlignRightClick" Classes="FormatBtn" Content="≡" HorizontalContentAlignment="Right" ToolTip.Tip="Alinear a la derecha"/>
+                        <Button Classes="FormatBtn" Content="↕" FontSize="16" ToolTip.Tip="Alineación vertical"/>
+                        <Button Classes="FormatBtn" Content="↩" FontSize="14" ToolTip.Tip="Ajuste de texto"/>
+                        <Separator Width="1" Height="20" Background="#E0E0E0" Margin="4,0"/>
+
+                        <!-- Insert -->
+                        <Button Classes="FormatBtn" Content="🔗" ToolTip.Tip="Insertar enlace (Ctrl+K)"/>
+                        <Button Classes="FormatBtn" Content="💬" ToolTip.Tip="Insertar comentario"/>
+                        <Button Classes="FormatBtn" Content="📊" ToolTip.Tip="Insertar gráfico"/>
+                        <Button Classes="FormatBtn" Content="🔻" ToolTip.Tip="Crear un filtro"/>
+                        <Button Classes="FormatBtn" Content="∑" FontSize="16" ToolTip.Tip="Funciones"/>
+                        <Separator Width="1" Height="20" Background="#E0E0E0" Margin="4,0"/>
+
+                        <!-- Formula Bar -->
+                        <TextBlock Text="fx" FontWeight="Bold" Foreground="#5F6368" VerticalAlignment="Center" Margin="8,0,8,0" FontStyle="Italic"/>
+                        <TextBox x:Name="FormulaBar" Watermark="Ingresar fórmula..." Width="300" BorderThickness="0" Background="Transparent" Height="32" VerticalContentAlignment="Center"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- Spreadsheet Content -->
+            <controls:CustomSpreadsheetControl Grid.Row="2" x:Name="SpreadsheetEditor" Spreadsheet="{Binding CurrentSpreadsheet}">
+                <controls:CustomSpreadsheetControl.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Cortar" InputGesture="Ctrl+X">
+                            <MenuItem.Icon><TextBlock Text="✂️"/></MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Copiar" InputGesture="Ctrl+C">
+                            <MenuItem.Icon><TextBlock Text="📄"/></MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Pegar" InputGesture="Ctrl+V">
+                            <MenuItem.Icon><TextBlock Text="📋"/></MenuItem.Icon>
+                        </MenuItem>
+                        <Separator/>
+                        <MenuItem Header="Insertar fila encima"/>
+                        <MenuItem Header="Insertar columna a la izquierda"/>
+                        <Separator/>
+                        <MenuItem Header="Eliminar fila"/>
+                        <MenuItem Header="Eliminar columna"/>
+                        <Separator/>
+                        <MenuItem Header="Formato de celda...">
+                            <MenuItem.Icon><TextBlock Text="🎨"/></MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </controls:CustomSpreadsheetControl.ContextMenu>
+            </controls:CustomSpreadsheetControl>
+
+            <!-- Sheets Tabs Bar -->
+            <Border Grid.Row="3" Background="White" Height="40" BorderThickness="0,1,0,0" BorderBrush="#E0E0E0">
+                <StackPanel Orientation="Horizontal" Spacing="0">
+                    <Button Classes="SheetTabActive" Content="Hoja 1"/>
+                    <Button Classes="SheetTab" Content="+"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.DocGridBtn">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button.DocGridBtn:pointerover">
+            <Setter Property="RenderTransform" Value="scale(1.02)"/>
+        </Style>
+        <Style Selector="Button.DocGridBtn:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <Style Selector="Button.FormatBtn">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="Button.FormatBtn:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#F1F3F4"/>
+        </Style>
+
+        <Style Selector="Button.SheetTabActive">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#107C41"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="24,0"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="BorderThickness" Value="0,0,1,0"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+        </Style>
+        <Style Selector="Button.SheetTab">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#5F6368"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="Height" Value="40"/>
+        </Style>
+    </UserControl.Styles>
+</UserControl>

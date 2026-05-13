@@ -1,0 +1,183 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AvaloniaShareApp.Infrastructure.Ui.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
+             x:Class="AvaloniaShareApp.Infrastructure.Ui.Views.WordView"
+             x:DataType="vm:WordViewModel"
+             Background="{DynamicResource SecondaryBackground}">
+             
+    <UserControl.Styles>
+        <!-- Elite Style for Template Cards -->
+        <Style Selector="Button.TemplateCard">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <ContentPresenter Background="Transparent" 
+                                      BorderThickness="0"
+                                      Content="{TemplateBinding Content}"/>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+        <Style Selector="Button.TemplateCard:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        
+        <Style Selector="Border.CardBody">
+            <Setter Property="Background" Value="{DynamicResource MainBackground}"/>
+            <Setter Property="CornerRadius" Value="24"/>
+            <Setter Property="BoxShadow" Value="{DynamicResource CardShadow}"/>
+            <Setter Property="RenderTransform" Value="scale(1)"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.3" Easing="CubicEaseOut"/>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.3" Easing="CubicEaseOut"/>
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <Style Selector="Button.TemplateCard:pointerover Border.CardBody">
+            <Setter Property="BoxShadow" Value="0 10 30 0 #15000000"/>
+            <Setter Property="RenderTransform" Value="scale(1.02)"/>
+        </Style>
+
+        <Style Selector="Button.TemplateCard:pressed Border.CardBody">
+            <Setter Property="BoxShadow" Value="0 12 35 0 #12000000"/>
+        </Style>
+
+        <Style Selector="Button.TemplateCard:pointerover TextBlock">
+            <Setter Property="Foreground" Value="#3B82F6"/>
+        </Style>
+        <Style Selector="Button.ActionBtn">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.2"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button.ActionBtn:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#F1F5F9"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="Auto, *" Margin="32">
+        
+        <!-- Top Section: Start New Document -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,40">
+            <TextBlock Text="Crear un nuevo documento" FontSize="20" Foreground="{DynamicResource PrimaryText}" FontWeight="SemiBold" LetterSpacing="-0.5" Margin="0,0,0,24"/>
+            
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                <StackPanel Orientation="Horizontal" Spacing="24">
+                    <!-- New Blank Doc Card -->
+                    <Button Classes="TemplateCard"
+                            Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).NavigateCommand}"
+                            CommandParameter="Editor">
+                        <StackPanel Spacing="16">
+                            <Border Classes="CardBody" Width="140" Height="180">
+                                <TextBlock Text="+" FontSize="48" Foreground="#3B82F6" FontWeight="Light" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="En blanco" FontSize="14" Foreground="{DynamicResource PrimaryText}" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Template 1 -->
+                    <Button Classes="TemplateCard">
+                        <StackPanel Spacing="16">
+                            <Border Classes="CardBody" Width="140" Height="180">
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="12">
+                                    <Border Width="60" Height="8" CornerRadius="4" Background="#E2E8F0"/>
+                                    <Border Width="80" Height="8" CornerRadius="4" Background="#F1F5F9"/>
+                                    <Border Width="40" Height="8" CornerRadius="4" Background="#F1F5F9" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </Border>
+                            <TextBlock Text="Curriculum" FontSize="14" Foreground="{DynamicResource PrimaryText}" FontWeight="Medium" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <!-- Template 2 -->
+                    <Button Classes="TemplateCard">
+                        <StackPanel Spacing="16">
+                            <Border Classes="CardBody" Width="140" Height="180">
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="12">
+                                     <Border Width="24" Height="24" CornerRadius="12" Background="#E2E8F0"/>
+                                     <Border Width="70" Height="8" CornerRadius="4" Background="#F1F5F9"/>
+                                </StackPanel>
+                            </Border>
+                            <TextBlock Text="Carta" FontSize="14" Foreground="{DynamicResource PrimaryText}" FontWeight="Medium" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </ScrollViewer>
+        </StackPanel>
+
+        <!-- Bottom Section: Recent Documents -->
+        <Grid Grid.Row="1" RowDefinitions="Auto, *">
+            <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,24">
+                <TextBlock Text="Documentos recientes" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryText}" LetterSpacing="-0.3" VerticalAlignment="Center"/>
+                
+                <!-- Search Bar -->
+                <Border Grid.Column="1" Background="{DynamicResource MainBackground}" 
+                        CornerRadius="20" Padding="12,0" Width="280" Height="40"
+                        BoxShadow="{DynamicResource CardShadow}">
+                    <Grid ColumnDefinitions="Auto, *">
+                        <TextBlock Text="🔍" VerticalAlignment="Center" Margin="10,0" Opacity="0.5" FontSize="12"/>
+                        <TextBox Grid.Column="1" Watermark="Buscar..." 
+                                 Text="{Binding SearchQuery}"
+                                 VerticalAlignment="Center"
+                                 FontSize="13"
+                                 BorderThickness="0" Background="Transparent" Padding="0,6"/>
+                    </Grid>
+                </Border>
+            </Grid>
+            
+            <ScrollViewer Grid.Row="1">
+                <ItemsControl ItemsSource="{Binding RecentDocuments}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                                 <Button Classes="TemplateCard"
+                                         Command="{Binding $parent[UserControl].((vm:WordViewModel)DataContext).OpenDocumentCommand}"
+                                         CommandParameter="{Binding Id}">
+                                     <Border Classes="CardBody" Width="200" Margin="0,0,20,20">
+                                         <StackPanel>
+                                             <!-- Thumbnail Placeholder -->
+                                             <Border Height="110" Background="{DynamicResource SecondaryBackground}" CornerRadius="24,24,0,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BorderColor}">
+                                                 <Grid>
+                                                     <TextBlock Text="{Binding Icon}" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Foreground="{DynamicResource PrimaryText}"/>
+                                                     
+                                                     <Button Classes="ActionBtn" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="8"
+                                                             Command="{Binding $parent[UserControl].((vm:WordViewModel)DataContext).DeleteDocumentCommand}"
+                                                             CommandParameter="{Binding Id}">
+                                                         <TextBlock Text="🗑️" FontSize="12"/>
+                                                     </Button>
+                                                 </Grid>
+                                             </Border>
+                                             <!-- Info -->
+                                             <StackPanel Margin="16,12,16,16">
+                                                 <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="14" Foreground="{DynamicResource PrimaryText}" TextTrimming="CharacterEllipsis"/>
+                                                 <TextBlock Text="{Binding LastOpened, StringFormat='Abierto {0:dd MMM}'}" FontSize="12" Foreground="{DynamicResource SecondaryText}" Margin="0,4,0,0"/>
+                                             </StackPanel>
+                                         </StackPanel>
+                                     </Border>
+                                 </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+        
+    </Grid>
+</UserControl>

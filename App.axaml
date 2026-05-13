@@ -1,0 +1,101 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="AvaloniaShareApp.App"
+             xmlns:local="using:AvaloniaShareApp"
+             xmlns:local_conv="using:AvaloniaShareApp.Infrastructure.Ui.Converters"
+             RequestedThemeVariant="Light">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Add Converters here if needed, or in Resources -->
+            </ResourceDictionary.MergedDictionaries>
+            
+            <local_conv:StringEqualsConverter x:Key="StringEqualsConverter" />
+            <local_conv:ThemeEqualityConverter x:Key="ThemeEqualityConverter" />
+
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="MainBackground" Color="#FFFFFF"/>
+                    <SolidColorBrush x:Key="SidebarBackground" Color="#F8FAFD"/>
+                    <SolidColorBrush x:Key="SecondaryBackground" Color="#F1F5F9"/>
+                    <SolidColorBrush x:Key="PrimaryText" Color="#0F172A"/>
+                    <SolidColorBrush x:Key="SecondaryText" Color="#64748B"/>
+                    <SolidColorBrush x:Key="BorderColor" Color="#E2E8F0"/>
+                    <SolidColorBrush x:Key="NavButtonHover" Color="#E8F0FE"/>
+                    <SolidColorBrush x:Key="NavButtonActive" Color="#1967D2"/>
+                    <BoxShadows x:Key="ContainerShadow">0 4 20 0 #10000000</BoxShadows>
+                    <BoxShadows x:Key="CardShadow">0 2 10 0 #08000000</BoxShadows>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="MainBackground" Color="#1E293B"/>
+                    <SolidColorBrush x:Key="SidebarBackground" Color="#0F172A"/>
+                    <SolidColorBrush x:Key="SecondaryBackground" Color="#334155"/>
+                    <SolidColorBrush x:Key="PrimaryText" Color="#F8FAFC"/>
+                    <SolidColorBrush x:Key="SecondaryText" Color="#94A3B8"/>
+                    <SolidColorBrush x:Key="BorderColor" Color="#475569"/>
+                    <SolidColorBrush x:Key="NavButtonHover" Color="#334155"/>
+                    <SolidColorBrush x:Key="NavButtonActive" Color="#3B82F6"/>
+                    <BoxShadows x:Key="ContainerShadow">0 8 40 0 #60000000</BoxShadows>
+                    <BoxShadows x:Key="CardShadow">0 4 25 0 #80000000</BoxShadows>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+  
+    <Application.Styles>
+        <FluentTheme />
+        <Style Selector="Button.NavButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+            <Setter Property="Padding" Value="7, 10"/>
+            <Setter Property="CornerRadius" Value="25"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="0, 2"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.2"/>
+                    <BrushTransition Property="Foreground" Duration="0:0:0.2"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button.NavButton:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource NavButtonHover}"/>
+            <Setter Property="Foreground" Value="{DynamicResource NavButtonActive}"/>
+        </Style>
+        <Style Selector="Button.NavButton.active /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource NavButtonHover}"/>
+            <Setter Property="Foreground" Value="{DynamicResource NavButtonActive}"/>
+        </Style>
+        <Style Selector="Button.NavButton.active">
+            <Setter Property="Background" Value="{DynamicResource NavButtonHover}"/>
+            <Setter Property="Foreground" Value="{DynamicResource NavButtonActive}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource NavButtonActive}"/>
+            <Setter Property="BorderThickness" Value="2,0,0,0"/>
+        </Style>
+        <Style Selector="Button.NavButton:pressed">
+            <Setter Property="RenderTransform" Value="scale(0.96)"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="RenderTransform" Value="scale(1)"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2" Easing="CubicEaseOut"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button:pointerover">
+            <Setter Property="RenderTransform" Value="scale(1.02)"/>
+        </Style>
+        <Style Selector="Button:pressed">
+            <Setter Property="RenderTransform" Value="scale(0.98)"/>
+        </Style>
+    </Application.Styles>
+</Application>

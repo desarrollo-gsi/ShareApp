@@ -1,0 +1,14 @@
+--- Infrastructure/Ui/Controls/CustomSpreadsheetControl.cs
++++ Infrastructure/Ui/Controls/CustomSpreadsheetControl.cs
+@@ -66,6 +66,7 @@
+         public void LoadSpreadsheet(Spreadsheet spreadsheet)
+         {
++            Console.WriteLine($"[DEBUG] LoadSpreadsheet called! ID: {spreadsheet.Id}");
+             _spreadsheet = spreadsheet;
+             if (_spreadsheet.Sheets.Count == 0)
+@@ -118,6 +119,7 @@
+         public override void Render(DrawingContext context)
+         {
++            Console.WriteLine($"[DEBUG] Render called! Bounds: {Bounds.Width}x{Bounds.Height}, Spreadsheet null? {_spreadsheet == null}");
+             base.Render(context);
+             if (_spreadsheet == null || _currentSheetIndex >= _spreadsheet.Sheets.Count) return;

@@ -1,0 +1,219 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaShareApp.Infrastructure.Ui.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        x:Class="AvaloniaShareApp.Infrastructure.Ui.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AvaloniaShareApp"
+        Width="1000" Height="650"
+        WindowStartupLocation="CenterScreen"
+        SystemDecorations="None"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        TransparencyLevelHint="Transparent"
+        Background="Transparent">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid>
+        <!-- Main Container -->
+        <Border x:Name="RootBorder" CornerRadius="24" Background="{DynamicResource MainBackground}" Margin="10" BoxShadow="{DynamicResource ContainerShadow}" ClipToBounds="True">
+            <Grid RowDefinitions="40, *" ColumnDefinitions="Auto, *">
+                
+                <!-- Sidebar -->
+                <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" 
+                        Background="{DynamicResource MainBackground}" 
+                        CornerRadius="30" Margin="10, 20, 10, 20" Padding="10, 15"
+                        Width="{Binding SidebarWidth}" 
+                        VerticalAlignment="Stretch"
+                        BoxShadow="0 4 30 0 #40000000"
+                        ZIndex="10">
+                    <Border.Transitions>
+                        <Transitions>
+                            <DoubleTransition Property="Width" Duration="0:0:0.2" Easing="CubicEaseOut"/>
+                        </Transitions>
+                    </Border.Transitions>
+
+                    <Grid RowDefinitions="Auto, *, Auto">
+                        <!-- Top Logo & Toggle -->
+                        <Grid Grid.Row="0" ColumnDefinitions="44, *" Margin="0,10,0,20">
+                            <Button Grid.Column="0" Command="{Binding ToggleSidebarCommand}" 
+                                    Background="Transparent" 
+                                    Padding="0" 
+                                    Width="44" Height="44"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                                <TextBlock Text="≡" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryText}"/>
+                            </Button>
+                            
+                            <TextBlock Grid.Column="1" Text="Drive Share" 
+                                       FontSize="18" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="{DynamicResource PrimaryText}"
+                                       VerticalAlignment="Center"
+                                       Margin="10,0,0,0"
+                                       IsVisible="{Binding IsSidebarExpanded}"/>
+                        </Grid>
+
+                        <!-- Main Navigation -->
+                        <StackPanel Grid.Row="1" Spacing="5">
+                            <Button Command="{Binding NavigateCommand}" CommandParameter="Dashboard" 
+                                    Classes="NavButton"
+                                    Classes.active="{Binding CurrentViewName, Converter={StaticResource StringEqualsConverter}, ConverterParameter=Dashboard}">
+                                <StackPanel Orientation="Horizontal" Spacing="15">
+                                    <TextBlock Text="🏠" FontSize="18" Width="30" TextAlignment="Center"/> 
+                                    <TextBlock Text="Mi unidad" IsVisible="{Binding IsSidebarExpanded}"/>
+                                </StackPanel>
+                            </Button>
+                            
+                            <Button Command="{Binding NavigateCommand}" CommandParameter="Share" 
+                                    Classes="NavButton"
+                                    Classes.active="{Binding CurrentViewName, Converter={StaticResource StringEqualsConverter}, ConverterParameter=Share}">
+                                <StackPanel Orientation="Horizontal" Spacing="15">
+                                    <TextBlock Text="👥" FontSize="18" Width="30" TextAlignment="Center"/> 
+                                    <TextBlock Text="Compartidos" IsVisible="{Binding IsSidebarExpanded}"/>
+                                </StackPanel>
+                            </Button>
+                            
+                            <Button Command="{Binding NavigateCommand}" CommandParameter="Trash" 
+                                    Classes="NavButton"
+                                    Classes.active="{Binding CurrentViewName, Converter={StaticResource StringEqualsConverter}, ConverterParameter=Trash}">
+                                <StackPanel Orientation="Horizontal" Spacing="15">
+                                    <TextBlock Text="🗑️" FontSize="18" Width="30" TextAlignment="Center"/> 
+                                    <TextBlock Text="Papelera" IsVisible="{Binding IsSidebarExpanded}"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Separator Margin="0,10" Background="{DynamicResource BorderColor}" Height="1"/>
+
+                            <Button Command="{Binding NavigateCommand}" CommandParameter="Word" 
+                                    Classes="NavButton"
+                                    Classes.active="{Binding CurrentViewName, Converter={StaticResource StringEqualsConverter}, ConverterParameter=Word}">
+                                <StackPanel Orientation="Horizontal" Spacing="15">
+                                    <TextBlock Text="📝" FontSize="18" Width="30" TextAlignment="Center"/> 
+                                    <TextBlock Text="Documentos" IsVisible="{Binding IsSidebarExpanded}"/>
+                                </StackPanel>
+                            </Button>
+                            
+                            <Button Command="{Binding NavigateCommand}" CommandParameter="Excel" 
+                                    Classes="NavButton"
+                                    Classes.active="{Binding CurrentViewName, Converter={StaticResource StringEqualsConverter}, ConverterParameter=Excel}">
+                                <StackPanel Orientation="Horizontal" Spacing="15">
+                                    <TextBlock Text="📊" FontSize="18" Width="30" TextAlignment="Center"/> 
+                                    <TextBlock Text="Hojas de cálculo" IsVisible="{Binding IsSidebarExpanded}"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- Bottom Settings -->
+                        <StackPanel Grid.Row="2" Spacing="5">
+                            <Separator Margin="0,10" Background="{DynamicResource BorderColor}" Height="1"/>
+                            <Button Command="{Binding NavigateCommand}" CommandParameter="Settings" 
+                                    Classes="NavButton"
+                                    Classes.active="{Binding CurrentViewName, Converter={StaticResource StringEqualsConverter}, ConverterParameter=Settings}">
+                                <StackPanel Orientation="Horizontal" Spacing="15">
+                                    <TextBlock Text="⚙️" FontSize="18" Width="30" TextAlignment="Center"/> 
+                                    <TextBlock Text="Ajustes" IsVisible="{Binding IsSidebarExpanded}"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Header Row with Interactive Window Controls -->
+                <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*, Auto" Margin="15,10,20,0" PointerPressed="OnTitleBarPointerPressed" Background="Transparent">
+                    <Border Grid.Column="0" Background="Transparent"/>
+                    
+                    <!-- Premium Window Control Pill -->
+                    <Border Grid.Column="1" 
+                            x:Name="WindowControlPill"
+                            Background="{DynamicResource NavButtonHover}"
+                            CornerRadius="20"
+                            Padding="3"
+                            Height="36"
+                            ClipToBounds="True"
+                            HorizontalAlignment="Right"
+                            BoxShadow="0 4 10 0 #20000000">
+                        <Border.Styles>
+                            <Style Selector="Border#WindowControlPill">
+                                <Setter Property="Width" Value="36"/>
+                                <Setter Property="Transitions">
+                                    <Transitions>
+                                        <DoubleTransition Property="Width" Duration="0:0:0.3" Easing="CubicEaseOut"/>
+                                    </Transitions>
+                                </Setter>
+                            </Style>
+                            <Style Selector="Border#WindowControlPill:pointerover">
+                                <Setter Property="Width" Value="110"/>
+                            </Style>
+                            
+                            <!-- Hide buttons when not hovered -->
+                            <Style Selector="StackPanel#ControlButtons">
+                                <Setter Property="Opacity" Value="0"/>
+                                <Setter Property="Transitions">
+                                    <Transitions>
+                                        <DoubleTransition Property="Opacity" Duration="0:0:0.2"/>
+                                    </Transitions>
+                                </Setter>
+                            </Style>
+                            <Style Selector="Border#WindowControlPill:pointerover StackPanel#ControlButtons">
+                                <Setter Property="Opacity" Value="1"/>
+                            </Style>
+
+                            <!-- Hide vertical dots when hovered -->
+                            <Style Selector="TextBlock#VerticalDots">
+                                <Setter Property="Opacity" Value="1"/>
+                                <Setter Property="Transitions">
+                                    <Transitions>
+                                        <DoubleTransition Property="Opacity" Duration="0:0:0.2"/>
+                                    </Transitions>
+                                </Setter>
+                            </Style>
+                            <Style Selector="Border#WindowControlPill:pointerover TextBlock#VerticalDots">
+                                <Setter Property="Opacity" Value="0"/>
+                            </Style>
+                        </Border.Styles>
+
+                        <Grid>
+                            <!-- Revealable Buttons (Visible when expanded) -->
+                            <StackPanel x:Name="ControlButtons" Orientation="Horizontal" Spacing="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Button x:Name="MinimizeButton" Width="30" Height="30" Background="Transparent" CornerRadius="15">
+                                    <TextBlock Text="—" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource SecondaryText}"/>
+                                </Button>
+                                <Button x:Name="MaximizeButton" Width="30" Height="30" Background="Transparent" CornerRadius="15">
+                                    <TextBlock Text="☐" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource SecondaryText}"/>
+                                </Button>
+                                <Button x:Name="CloseButton" Width="30" Height="30" Background="Transparent" CornerRadius="15">
+                                    <TextBlock Text="✕" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF5F56"/>
+                                </Button>
+                            </StackPanel>
+
+                            <!-- Main Icon (at the very center when collapsed) -->
+                            <TextBlock x:Name="VerticalDots"
+                                       Text="⋮" 
+                                       FontSize="16" 
+                                       FontWeight="Bold"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center" 
+                                       Foreground="{DynamicResource SecondaryText}"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <!-- Content Area -->
+                <Border Grid.Row="1" Grid.Column="1" Background="Transparent" Padding="10">
+                    <TransitioningContentControl Content="{Binding CurrentPage}">
+                        <TransitioningContentControl.PageTransition>
+                            <PageSlide Duration="0:0:0.35" Orientation="Vertical" />
+                        </TransitioningContentControl.PageTransition>
+                    </TransitioningContentControl>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

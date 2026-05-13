@@ -1,0 +1,105 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:AvaloniaShareApp.Infrastructure.Ui.ViewModels"
+             xmlns:conv="using:AvaloniaShareApp.Infrastructure.Ui.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AvaloniaShareApp.Infrastructure.Ui.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+
+    <StackPanel Spacing="30" Margin="40">
+        <StackPanel Spacing="10">
+            <TextBlock Text="Ajustes" FontSize="32" FontWeight="Bold" Foreground="{DynamicResource PrimaryText}"/>
+            <TextBlock Text="Personaliza tu experiencia en ShareApp" Foreground="{DynamicResource SecondaryText}"/>
+        </StackPanel>
+
+        <Border Background="{DynamicResource SecondaryBackground}" CornerRadius="16" Padding="25" BoxShadow="{DynamicResource CardShadow}">
+            <StackPanel Spacing="20">
+                <StackPanel Orientation="Horizontal" Spacing="15">
+                    <TextBlock Text="🎨" FontSize="24" VerticalAlignment="Center"/>
+                    <TextBlock Text="Tema de la aplicación" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryText}"/>
+                </StackPanel>
+
+                <Grid ColumnDefinitions="*, *, *" ColumnSpacing="15">
+                    <!-- Light Theme Option -->
+                    <Button Grid.Column="0" Command="{Binding ApplyThemeCommand}" CommandParameter="Claro"
+                            Background="Transparent" BorderThickness="2" CornerRadius="12" Padding="0"
+                            HorizontalAlignment="Stretch">
+                        <Button.BorderBrush>
+                            <Binding Path="SelectedTheme" ConverterParameter="Claro">
+                                <Binding.Converter>
+                                    <conv:ThemeEqualityConverter/>
+                                </Binding.Converter>
+                            </Binding>
+                        </Button.BorderBrush>
+                        <StackPanel Spacing="10" Margin="15">
+                            <Border Height="60" Background="#FFFFFF" CornerRadius="8" BorderBrush="#E2E8F0" BorderThickness="1">
+                                <StackPanel Orientation="Horizontal" Margin="5" Spacing="5">
+                                    <Border Width="15" Background="#F8FAFD" CornerRadius="4"/>
+                                    <Border Width="30" Background="#F1F5F9" CornerRadius="4"/>
+                                </StackPanel>
+                            </Border>
+                            <TextBlock Text="Claro" HorizontalAlignment="Center" FontWeight="Medium" Foreground="{DynamicResource PrimaryText}"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- VS Code Dark Option -->
+                    <Button Grid.Column="1" Command="{Binding ApplyThemeCommand}" CommandParameter="Oscuro (VS Code)"
+                            Background="Transparent" BorderThickness="2" CornerRadius="12" Padding="0"
+                            HorizontalAlignment="Stretch">
+                        <Button.BorderBrush>
+                            <Binding Path="SelectedTheme" ConverterParameter="Oscuro (VS Code)">
+                                <Binding.Converter>
+                                    <conv:ThemeEqualityConverter/>
+                                </Binding.Converter>
+                            </Binding>
+                        </Button.BorderBrush>
+                        <StackPanel Spacing="10" Margin="15">
+                            <Border Height="60" Background="#1E1E1E" CornerRadius="8" BorderBrush="#333333" BorderThickness="1">
+                                <StackPanel Orientation="Horizontal" Margin="5" Spacing="5">
+                                    <Border Width="15" Background="#252526" CornerRadius="4"/>
+                                    <Border Width="30" Background="#2D2D30" CornerRadius="4"/>
+                                </StackPanel>
+                            </Border>
+                            <TextBlock Text="Oscuro (VS Code)" HorizontalAlignment="Center" FontWeight="Medium" Foreground="{DynamicResource PrimaryText}"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Blue Dark Option -->
+                    <Button Grid.Column="2" Command="{Binding ApplyThemeCommand}" CommandParameter="Oscuro (Azul)"
+                            Background="Transparent" BorderThickness="2" CornerRadius="12" Padding="0"
+                            HorizontalAlignment="Stretch">
+                        <Button.BorderBrush>
+                            <Binding Path="SelectedTheme" ConverterParameter="Oscuro (Azul)">
+                                <Binding.Converter>
+                                    <conv:ThemeEqualityConverter/>
+                                </Binding.Converter>
+                            </Binding>
+                        </Button.BorderBrush>
+                        <StackPanel Spacing="10" Margin="15">
+                            <Border Height="60" Background="#1E293B" CornerRadius="8" BorderBrush="#334155" BorderThickness="1">
+                                <StackPanel Orientation="Horizontal" Margin="5" Spacing="5">
+                                    <Border Width="15" Background="#0F172A" CornerRadius="4"/>
+                                    <Border Width="30" Background="#334155" CornerRadius="4"/>
+                                </StackPanel>
+                            </Border>
+                            <TextBlock Text="Oscuro (Azul)" HorizontalAlignment="Center" FontWeight="Medium" Foreground="{DynamicResource PrimaryText}"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <Border Background="{DynamicResource SecondaryBackground}" CornerRadius="16" Padding="25" BoxShadow="{DynamicResource CardShadow}">
+            <StackPanel Spacing="15">
+                <StackPanel Orientation="Horizontal" Spacing="15">
+                    <TextBlock Text="ℹ️" FontSize="20" VerticalAlignment="Center"/>
+                    <TextBlock Text="Acerca de" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryText}"/>
+                </StackPanel>
+                <TextBlock Text="ShareApp v1.5.0 - Hexagonal Edition" Foreground="{DynamicResource SecondaryText}"/>
+                <TextBlock Text="Desarrollado con Avalonia UI y ❤️" Foreground="{DynamicResource SecondaryText}"/>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

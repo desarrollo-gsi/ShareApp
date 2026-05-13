@@ -1,0 +1,609 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AvaloniaShareApp.Infrastructure.Ui.ViewModels"
+             xmlns:controls="clr-namespace:AvaloniaShareApp.Infrastructure.Ui.Controls"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:Class="AvaloniaShareApp.Infrastructure.Ui.Views.DocumentEditorView"
+             x:DataType="vm:DocumentEditorViewModel"
+             Background="{DynamicResource SecondaryBackground}">
+             
+  <UserControl.Styles>
+      <!-- Palette Buttons -->
+      <Style Selector="Button.ColorBtn">
+          <Setter Property="Width" Value="24"/>
+          <Setter Property="Height" Value="24"/>
+          <Setter Property="Margin" Value="2"/>
+          <Setter Property="Padding" Value="0"/>
+          <Setter Property="CornerRadius" Value="12"/>
+          <Setter Property="BorderThickness" Value="1"/>
+          <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+          <Setter Property="Cursor" Value="Hand"/>
+          <Setter Property="Focusable" Value="False"/>
+          <Setter Property="Transitions">
+              <Transitions>
+                  <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2" />
+              </Transitions>
+          </Setter>
+      </Style>
+      <Style Selector="Button.ColorBtn:pressed">
+          <Setter Property="RenderTransform" Value="scale(0.95)"/>
+          <Setter Property="Background" Value="#DBEAFE"/>
+      </Style>
+      <Style Selector="Button.ColorBtn">
+          <Setter Property="Template">
+              <ControlTemplate>
+                  <Border Background="{TemplateBinding Tag}" 
+                          CornerRadius="12" 
+                          BorderThickness="{TemplateBinding BorderThickness}" 
+                          BorderBrush="{TemplateBinding BorderBrush}">
+                  </Border>
+              </ControlTemplate>
+          </Setter>
+      </Style>
+
+      <!-- Toolbar Toggle Buttons (Bold, Italic, Alignments) -->
+      <Style Selector="ToggleButton.ToolBtn, Button.ToolBtn">
+          <Setter Property="Width" Value="36"/>
+          <Setter Property="Height" Value="36"/>
+          <Setter Property="Background" Value="Transparent"/>
+          <Setter Property="CornerRadius" Value="8"/>
+          <Setter Property="Focusable" Value="False"/>
+          <Setter Property="Cursor" Value="Hand"/>
+          <Setter Property="Transitions">
+              <Transitions>
+                  <BrushTransition Property="Background" Duration="0:0:0.2"/>
+              </Transitions>
+          </Setter>
+          <Setter Property="Template">
+              <ControlTemplate>
+                  <Border Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}">
+                      <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}"/>
+                  </Border>
+              </ControlTemplate>
+          </Setter>
+      </Style>
+      
+      <Style Selector="ToggleButton.ToolBtn:pointerover /template/ ContentPresenter, Button.ToolBtn:pointerover /template/ ContentPresenter">
+          <Setter Property="Background" Value="#F1F5F9"/>
+      </Style>
+      <Style Selector="ToggleButton.ToolBtn:pressed">
+          <Setter Property="Background" Value="#DBEAFE"/>
+      </Style>
+      <Style Selector="ToggleButton.ToolBtn:checked">
+          <Setter Property="Background" Value="#DBEAFE"/>
+          <Setter Property="Foreground" Value="#1D4ED8"/>
+      </Style>
+      
+      <!-- ComboBox No Hover -->
+      <Style Selector="ComboBox.NoHover:pointerover /template/ Border#Background">
+          <Setter Property="Background" Value="{DynamicResource SecondaryBackground}"/>
+          <Setter Property="BorderBrush" Value="Transparent"/>
+      </Style>
+      
+      <!-- TextBox Title Focus Fix -->
+      <Style Selector="TextBox.TitleBox:focus /template/ Border#PART_BorderElement">
+          <Setter Property="Background" Value="Transparent"/>
+          <Setter Property="BorderThickness" Value="0"/>
+      </Style>
+      <Style Selector="TextBox.TitleBox:pointerover /template/ Border#PART_BorderElement">
+          <Setter Property="Background" Value="Transparent"/>
+          <Setter Property="BorderThickness" Value="0"/>
+      </Style>
+
+      <!-- Alignment Radio Buttons -->
+      <Style Selector="RadioButton.AlignBtn">
+          <Setter Property="Width" Value="36"/>
+          <Setter Property="Height" Value="36"/>
+          <Setter Property="Background" Value="Transparent"/>
+          <Setter Property="CornerRadius" Value="8"/>
+          <Setter Property="Padding" Value="0"/>
+          <Setter Property="Margin" Value="1"/>
+          <Setter Property="Cursor" Value="Hand"/>
+          <Setter Property="Transitions">
+              <Transitions>
+                  <BrushTransition Property="Background" Duration="0:0:0.2"/>
+              </Transitions>
+          </Setter>
+          <Setter Property="Template">
+              <ControlTemplate>
+                  <Border Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}">
+                      <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}"/>
+                  </Border>
+              </ControlTemplate>
+          </Setter>
+      </Style>
+      <Style Selector="RadioButton.AlignBtn:pressed">
+          <Setter Property="Background" Value="#DBEAFE"/>
+      </Style>
+      <Style Selector="RadioButton.AlignBtn:checked">
+          <Setter Property="Background" Value="#DBEAFE"/>
+      </Style>
+
+      <!-- Top Tab Buttons (RadioButtons) -->
+      <Style Selector="RadioButton.TabBtn">
+          <Setter Property="Background" Value="Transparent"/>
+          <Setter Property="CornerRadius" Value="18"/>
+          <Setter Property="Padding" Value="16,8"/>
+          <Setter Property="Cursor" Value="Hand"/>
+          <Setter Property="BorderThickness" Value="0"/>
+          <Setter Property="Foreground" Value="{DynamicResource SecondaryText}"/>
+          <Setter Property="FontWeight" Value="Medium"/>
+          <Setter Property="FontSize" Value="13"/>
+          <Setter Property="Transitions">
+              <Transitions>
+                  <BrushTransition Property="Background" Duration="0:0:0.2"/>
+                  <BrushTransition Property="Foreground" Duration="0:0:0.2"/>
+              </Transitions>
+          </Setter>
+          <Setter Property="Template">
+              <ControlTemplate>
+                  <Border Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}" Padding="{TemplateBinding Padding}">
+                      <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}"/>
+                  </Border>
+              </ControlTemplate>
+          </Setter>
+      </Style>
+      <Style Selector="RadioButton.TabBtn:pointerover">
+          <Setter Property="Background" Value="#F1F5F9"/>
+      </Style>
+      <Style Selector="RadioButton.TabBtn:checked">
+          <Setter Property="Background" Value="#EEF2FF"/>
+          <Setter Property="Foreground" Value="#4F46E5"/>
+          <Setter Property="FontWeight" Value="SemiBold"/>
+      </Style>
+
+      <!-- Expandable Share Button Transitions -->
+      <Style Selector="Button.ExpandableShare TextBlock#ShareText">
+          <Setter Property="MaxWidth" Value="0"/>
+          <Setter Property="Opacity" Value="0"/>
+          <Setter Property="Margin" Value="0"/>
+          <Setter Property="Transitions">
+              <Transitions>
+                  <DoubleTransition Property="MaxWidth" Duration="0:0:0.3" Easing="CubicEaseOut"/>
+                  <DoubleTransition Property="Opacity" Duration="0:0:0.3" Easing="CubicEaseOut"/>
+                  <ThicknessTransition Property="Margin" Duration="0:0:0.2" Easing="CubicEaseOut"/>
+              </Transitions>
+          </Setter>
+      </Style>
+      <Style Selector="Button.ExpandableShare:pointerover TextBlock#ShareText">
+          <Setter Property="MaxWidth" Value="100"/>
+          <Setter Property="Opacity" Value="1"/>
+          <Setter Property="Margin" Value="8,0,0,0"/>
+      </Style>
+
+      <!-- File Menu Option Buttons -->
+      <Style Selector="Button.MenuOption">
+          <Setter Property="HorizontalAlignment" Value="Stretch"/>
+          <Setter Property="HorizontalContentAlignment" Value="Left"/>
+          <Setter Property="Background" Value="Transparent"/>
+          <Setter Property="Padding" Value="12,10"/>
+          <Setter Property="CornerRadius" Value="8"/>
+          <Setter Property="BorderThickness" Value="0"/>
+          <Setter Property="FontSize" Value="13"/>
+          <Setter Property="Foreground" Value="#334155"/>
+          <Setter Property="Transitions">
+              <Transitions>
+                  <BrushTransition Property="Background" Duration="0:0:0.1"/>
+              </Transitions>
+          </Setter>
+      </Style>
+      <Style Selector="Button.MenuOption:pointerover /template/ Border#PART_BorderElement">
+          <Setter Property="Background" Value="#F1F5F9"/>
+      </Style>
+      <Style Selector="Button.MenuOption:pressed">
+          <Setter Property="RenderTransform" Value="scale(0.98)"/>
+      </Style>
+
+      <!-- Borderless Flyout Presenter with Padding for Shadows -->
+      <Style Selector="FlyoutPresenter.Borderless">
+          <Setter Property="Padding" Value="40"/>
+          <Setter Property="Background" Value="Transparent"/>
+          <Setter Property="BorderThickness" Value="0"/>
+          <Setter Property="MinWidth" Value="0"/>
+          <Setter Property="MinHeight" Value="0"/>
+          <Setter Property="Effect" Value="{x:Null}"/>
+          <Setter Property="Template">
+              <ControlTemplate>
+                  <ContentPresenter Name="PART_ContentPresenter"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    Content="{TemplateBinding Content}"
+                                    Padding="{TemplateBinding Padding}"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+              </ControlTemplate>
+          </Setter>
+      </Style>
+  </UserControl.Styles>
+             
+  <Grid RowDefinitions="Auto, Auto, *, Auto">
+      
+      <!-- HEADER / RIBBON AREA -->
+      <Border Grid.Row="0" Background="{DynamicResource MainBackground}" BoxShadow="{DynamicResource ContainerShadow}" ZIndex="10" CornerRadius="0,0,24,24" Margin="0,0,0,1">
+          <StackPanel>
+              <!-- Document Title & Profile -->
+              <Grid ColumnDefinitions="Auto, *, Auto" Margin="24,12,24,4">
+                  <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="16">
+                      <Button Width="40" Height="40" CornerRadius="8" Background="#EEF2FF" BorderBrush="#E0E7FF" BorderThickness="1" Padding="0">
+                          <Button.Flyout>
+                              <Flyout Placement="BottomEdgeAlignedLeft" 
+                                      FlyoutPresenterClasses="Borderless"
+                                      HorizontalOffset="-40" VerticalOffset="-36">
+                                  <Border Background="{DynamicResource MainBackground}" CornerRadius="16" Padding="8" BoxShadow="{DynamicResource ContainerShadow}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" MinWidth="260">
+                                      <StackPanel Spacing="1">
+                                          <TextBlock Text="ARCHIVO" FontSize="11" FontWeight="Bold" Foreground="#94A3B8" Margin="12,8,12,4" LetterSpacing="1"/>
+                                          
+                                          <Button Classes="MenuOption" Command="{Binding NewDocumentCommand}">
+                                              <Grid ColumnDefinitions="32, *, Auto">
+                                                  <TextBlock Grid.Column="0" Text="✨" VerticalAlignment="Center" FontSize="16"/>
+                                                  <TextBlock Grid.Column="1" Text="Nuevo" VerticalAlignment="Center" FontWeight="Medium"/>
+                                                  <TextBlock Grid.Column="2" Text="Ctrl+N" FontSize="11" Foreground="#94A3B8" VerticalAlignment="Center"/>
+                                              </Grid>
+                                          </Button>
+                                          
+                                          <Button Classes="MenuOption" Command="{Binding OpenDocumentCommand}">
+                                              <Grid ColumnDefinitions="32, *, Auto">
+                                                  <TextBlock Grid.Column="0" Text="📂" VerticalAlignment="Center" FontSize="16"/>
+                                                  <TextBlock Grid.Column="1" Text="Abrir..." VerticalAlignment="Center" FontWeight="Medium"/>
+                                                  <TextBlock Grid.Column="2" Text="Ctrl+O" FontSize="11" Foreground="#94A3B8" VerticalAlignment="Center"/>
+                                              </Grid>
+                                          </Button>
+                                          
+                                          <Separator Height="1" Background="#F1F5F9" Margin="8,4"/>
+                                          
+                                          <Button Classes="MenuOption" Command="{Binding SaveDocumentCommand}">
+                                              <Grid ColumnDefinitions="32, *, Auto">
+                                                  <TextBlock Grid.Column="0" Text="💾" VerticalAlignment="Center" FontSize="16"/>
+                                                  <TextBlock Grid.Column="1" Text="Guardar" VerticalAlignment="Center" FontWeight="Medium"/>
+                                                  <TextBlock Grid.Column="2" Text="Ctrl+G" FontSize="11" Foreground="#94A3B8" VerticalAlignment="Center"/>
+                                              </Grid>
+                                          </Button>
+                                          
+                                          <Button Classes="MenuOption" Command="{Binding SaveDocumentAsCommand}">
+                                              <Grid ColumnDefinitions="32, *, Auto">
+                                                  <TextBlock Grid.Column="0" Text="📝" VerticalAlignment="Center" FontSize="16"/>
+                                                  <TextBlock Grid.Column="1" Text="Guardar como..." VerticalAlignment="Center" FontWeight="Medium"/>
+                                                  <TextBlock Grid.Column="2" Text="Ctrl+Shift+S" FontSize="11" Foreground="#94A3B8" VerticalAlignment="Center"/>
+                                              </Grid>
+                                          </Button>
+                                          
+                                          <Separator Height="1" Background="#F1F5F9" Margin="8,4"/>
+                                          
+                                          <Button Classes="MenuOption" Command="{Binding ExportPdfCommand}">
+                                              <Grid ColumnDefinitions="32, *, Auto">
+                                                  <TextBlock Grid.Column="0" Text="📄" VerticalAlignment="Center" FontSize="16"/>
+                                                  <TextBlock Grid.Column="1" Text="Exportar a PDF" VerticalAlignment="Center" FontWeight="Medium"/>
+                                              </Grid>
+                                          </Button>
+                                      </StackPanel>
+                                  </Border>
+                              </Flyout>
+                          </Button.Flyout>
+                          <TextBlock Text="📄" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                      </Button>
+                      <TextBox Classes="TitleBox" Text="{Binding DocumentTitle}" 
+                               FontSize="18" FontWeight="SemiBold" 
+                               Background="Transparent" BorderThickness="0"
+                               Foreground="{DynamicResource PrimaryText}"
+                               MinWidth="300" VerticalAlignment="Center"
+                               Padding="0"
+                               FocusAdorner="{x:Null}">
+                           <!-- FocusAdorner={x:Null} removes the blue Avalonia focus ring outline -->
+                      </TextBox>
+                  </StackPanel>
+
+                  <!-- Right actions (Share) -->
+                  <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="12">
+                      <Button Classes="ExpandableShare" Background="#3B82F6" Foreground="White" CornerRadius="99" Padding="16,8" FontWeight="Medium" Cursor="Hand">
+                          <StackPanel Orientation="Horizontal" Spacing="0">
+                              <TextBlock Text="🔗" FontSize="14" VerticalAlignment="Center"/>
+                              <TextBlock x:Name="ShareText" Text="Compartir" VerticalAlignment="Center" ClipToBounds="True"/>
+                          </StackPanel>
+                      </Button>
+                  </StackPanel>
+              </Grid>
+              
+              <!-- Tab Navigation -->
+              <StackPanel Orientation="Horizontal" Spacing="4" Margin="24,0,24,0">
+                  <RadioButton Classes="TabBtn" x:Name="HomeTab" GroupName="RibbonTabs" IsChecked="True" Content="Inicio"/>
+                  <RadioButton Classes="TabBtn" x:Name="InsertTab" GroupName="RibbonTabs" Content="Insertar"/>
+                  <RadioButton Classes="TabBtn" x:Name="FormatTab" GroupName="RibbonTabs" Content="Formato"/>
+                  <RadioButton Classes="TabBtn" x:Name="ToolsTab" GroupName="RibbonTabs" Content="Herramientas"/>
+                  <RadioButton Classes="TabBtn" x:Name="ImageFormatTab" GroupName="RibbonTabs" Content="Formato de Imagen" Foreground="#D97706" IsVisible="False"/>
+              </StackPanel>
+          </StackPanel>
+      </Border>
+
+      <!-- FLOATING TOOLBAR -->
+      <Border Grid.Row="1" Background="{DynamicResource MainBackground}" Padding="12,8" HorizontalAlignment="Stretch" ZIndex="10" 
+              CornerRadius="0,0,20,20" BoxShadow="{DynamicResource CardShadow}" Margin="24,0">
+          <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+              <Grid>
+                  <!-- HOME TOOLBAR -->
+                  <StackPanel x:Name="HomeToolbar" Orientation="Horizontal" Spacing="24">
+                      
+                      <!-- Undo/Redo Group -->
+                      <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+                          <Button Classes="ToolBtn" x:Name="UndoButton" ToolTip.Tip="Deshacer (Ctrl+Z)">
+                              <TextBlock Text="↩️" FontSize="14"/>
+                          </Button>
+                          <Button Classes="ToolBtn" x:Name="RedoButton" ToolTip.Tip="Rehacer (Ctrl+Y)">
+                              <TextBlock Text="↪️" FontSize="14"/>
+                          </Button>
+                      </StackPanel>
+
+                      <Border Width="1" Background="#E2E8F0" Height="24" VerticalAlignment="Center"/>
+
+                      <!-- Font Group -->
+                      <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                          <ComboBox Classes="NoHover" x:Name="FontFamilyCombo" Width="160" Height="36" CornerRadius="12" Background="{DynamicResource SecondaryBackground}" BorderThickness="0" FontSize="13" SelectedIndex="0" Foreground="{DynamicResource PrimaryText}">
+                              <ComboBoxItem Content="Inter" Tag="Inter" FontFamily="Inter"/>
+                              <ComboBoxItem Content="Calibri" Tag="Calibri" FontFamily="Calibri"/>
+                              <ComboBoxItem Content="Arial" Tag="Arial" FontFamily="Arial"/>
+                              <ComboBoxItem Content="Times New Roman" Tag="Times New Roman" FontFamily="Times New Roman"/>
+                              <ComboBoxItem Content="Georgia" Tag="Georgia" FontFamily="Georgia"/>
+                          </ComboBox>
+                          <ComboBox Classes="NoHover" x:Name="FontSizeCombo" Width="70" Height="36" CornerRadius="12" Background="{DynamicResource SecondaryBackground}" BorderThickness="0" FontSize="13" SelectedIndex="3" Foreground="{DynamicResource PrimaryText}">
+                              <ComboBoxItem Content="10" Tag="10"/>
+                              <ComboBoxItem Content="11" Tag="11"/>
+                              <ComboBoxItem Content="12" Tag="12"/>
+                              <ComboBoxItem Content="14" Tag="14"/>
+                              <ComboBoxItem Content="16" Tag="16"/>
+                              <ComboBoxItem Content="18" Tag="18"/>
+                              <ComboBoxItem Content="24" Tag="24"/>
+                              <ComboBoxItem Content="36" Tag="36"/>
+                          </ComboBox>
+                      </StackPanel>
+
+                      <Border Width="1" Background="#E2E8F0" Height="24" VerticalAlignment="Center"/>
+                      
+                      <!-- Text Styling Group -->
+                      <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+                          <ToggleButton Classes="ToolBtn" x:Name="BoldButton" ToolTip.Tip="Negrita">
+                              <TextBlock Text="B" FontWeight="Bold" FontFamily="Times New Roman" FontSize="18" Foreground="{DynamicResource PrimaryText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                          </ToggleButton>
+                          <ToggleButton Classes="ToolBtn" x:Name="ItalicButton" ToolTip.Tip="Cursiva">
+                              <TextBlock Text="I" FontStyle="Italic" FontFamily="Times New Roman" FontSize="18" Foreground="{DynamicResource PrimaryText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                          </ToggleButton>
+                          <ToggleButton Classes="ToolBtn" x:Name="UnderlineButton" ToolTip.Tip="Subrayado">
+                              <TextBlock Text="U" TextDecorations="Underline" FontFamily="Times New Roman" FontSize="18" Foreground="{DynamicResource PrimaryText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                          </ToggleButton>
+                      </StackPanel>
+
+                      <Border Width="1" Background="#E2E8F0" Height="24" VerticalAlignment="Center"/>
+
+                      <!-- Colors -->
+                      <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                          <!-- Text Color Picker -->
+                          <DropDownButton Width="48" Height="36" CornerRadius="8" Background="Transparent" BorderThickness="0" ToolTip.Tip="Color de texto" Cursor="Hand">
+                              <StackPanel Spacing="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                  <TextBlock Text="A" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource PrimaryText}" HorizontalAlignment="Center"/>
+                                  <Border x:Name="TextColorIndicator" Height="4" Width="18" Background="#3B82F6" CornerRadius="2"/>
+                              </StackPanel>
+                              <DropDownButton.Flyout>
+                                  <Flyout Placement="Bottom">
+                                      <Border Background="White" CornerRadius="16" Padding="16" BoxShadow="0 10 30 0 #15000000">
+                                          <StackPanel Spacing="12">
+                                              <TextBlock Text="COLORES" FontSize="12" FontWeight="SemiBold" Foreground="#64748B" LetterSpacing="1"/>
+                                              <WrapPanel x:Name="TextColorPalette" ItemWidth="30" ItemHeight="30" MaxWidth="180">
+                                                  <Button Tag="#0F172A" Classes="ColorBtn"/><Button Tag="#334155" Classes="ColorBtn"/>
+                                                  <Button Tag="#64748B" Classes="ColorBtn"/><Button Tag="#94A3B8" Classes="ColorBtn"/>
+                                                  <Button Tag="#CBD5E1" Classes="ColorBtn"/><Button Tag="#FFFFFF" Classes="ColorBtn"/>
+                                                  
+                                                  <Button Tag="#EF4444" Classes="ColorBtn"/><Button Tag="#F97316" Classes="ColorBtn"/>
+                                                  <Button Tag="#F59E0B" Classes="ColorBtn"/><Button Tag="#10B981" Classes="ColorBtn"/>
+                                                  <Button Tag="#3B82F6" Classes="ColorBtn"/><Button Tag="#6366F1" Classes="ColorBtn"/>
+                                                  <Button Tag="#8B5CF6" Classes="ColorBtn"/><Button Tag="#EC4899" Classes="ColorBtn"/>
+                                              </WrapPanel>
+                                          </StackPanel>
+                                      </Border>
+                                  </Flyout>
+                              </DropDownButton.Flyout>
+                          </DropDownButton>
+                          
+                          <!-- Highlight Color Picker -->
+                          <DropDownButton Width="48" Height="36" CornerRadius="8" Background="Transparent" BorderThickness="0" ToolTip.Tip="Resaltar" Cursor="Hand">
+                              <StackPanel Spacing="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                  <Border Padding="2,0" Background="#FECACA" CornerRadius="4">
+                                      <TextBlock Text="ab" FontSize="12" Foreground="#0F172A"/>
+                                  </Border>
+                                  <Border x:Name="HighlightColorIndicator" Height="4" Width="18" Background="#FECACA" CornerRadius="2"/>
+                              </StackPanel>
+                              <DropDownButton.Flyout>
+                                  <Flyout Placement="Bottom">
+                                      <Border Background="White" CornerRadius="16" Padding="16" BoxShadow="0 10 30 0 #15000000">
+                                          <StackPanel Spacing="12">
+                                              <TextBlock Text="RESALTADO" FontSize="12" FontWeight="SemiBold" Foreground="#64748B" LetterSpacing="1"/>
+                                              <WrapPanel x:Name="HighlightColorPalette" ItemWidth="30" ItemHeight="30" MaxWidth="180">
+                                                  <Button Tag="Transparent" Classes="ColorBtn" ToolTip.Tip="Ninguno"/>
+                                                  <Button Tag="#FEF08A" Classes="ColorBtn"/><Button Tag="#BBF7D0" Classes="ColorBtn"/>
+                                                  <Button Tag="#A7F3D0" Classes="ColorBtn"/><Button Tag="#BAE6FD" Classes="ColorBtn"/>
+                                                  <Button Tag="#C7D2FE" Classes="ColorBtn"/><Button Tag="#E9D5FF" Classes="ColorBtn"/>
+                                                  <Button Tag="#FBCFE8" Classes="ColorBtn"/><Button Tag="#FECACA" Classes="ColorBtn"/>
+                                              </WrapPanel>
+                                          </StackPanel>
+                                      </Border>
+                                  </Flyout>
+                              </DropDownButton.Flyout>
+                          </DropDownButton>
+                      </StackPanel>
+
+                      <Border Width="1" Background="#E2E8F0" Height="24" VerticalAlignment="Center"/>
+
+                      <!-- Alignment Group -->
+                      <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+                          <RadioButton Classes="AlignBtn" x:Name="AlignLeftButton" GroupName="Alignment" IsChecked="True" ToolTip.Tip="Izquierda">
+                              <StackPanel VerticalAlignment="Center" Spacing="3">
+                                  <Border Height="2" Width="16" Background="#334155" CornerRadius="1"/>
+                                  <Border Height="2" Width="10" Background="#334155" HorizontalAlignment="Left" CornerRadius="1"/>
+                                  <Border Height="2" Width="16" Background="#334155" CornerRadius="1"/>
+                                  <Border Height="2" Width="12" Background="#334155" HorizontalAlignment="Left" CornerRadius="1"/>
+                              </StackPanel>
+                          </RadioButton>
+                          <RadioButton Classes="AlignBtn" x:Name="AlignCenterButton" GroupName="Alignment" ToolTip.Tip="Centrar">
+                              <StackPanel VerticalAlignment="Center" Spacing="3">
+                                  <Border Height="2" Width="16" Background="#334155" CornerRadius="1"/>
+                                  <Border Height="2" Width="10" Background="#334155" HorizontalAlignment="Center" CornerRadius="1"/>
+                                  <Border Height="2" Width="16" Background="#334155" CornerRadius="1"/>
+                                  <Border Height="2" Width="12" Background="#334155" HorizontalAlignment="Center" CornerRadius="1"/>
+                              </StackPanel>
+                          </RadioButton>
+                          <RadioButton Classes="AlignBtn" x:Name="AlignRightButton" GroupName="Alignment" ToolTip.Tip="Derecha">
+                              <StackPanel VerticalAlignment="Center" Spacing="3">
+                                  <Border Height="2" Width="16" Background="#334155" CornerRadius="1"/>
+                                  <Border Height="2" Width="10" Background="#334155" HorizontalAlignment="Right" CornerRadius="1"/>
+                                  <Border Height="2" Width="16" Background="#334155" CornerRadius="1"/>
+                                  <Border Height="2" Width="12" Background="#334155" HorizontalAlignment="Right" CornerRadius="1"/>
+                              </StackPanel>
+                          </RadioButton>
+                      </StackPanel>
+
+                      <Border Width="1" Background="#E2E8F0" Height="24" VerticalAlignment="Center"/>
+
+                      <!-- Paragraph Styling -->
+                      <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                          <ComboBox x:Name="LineSpacingCombo" Width="60" Height="36" CornerRadius="12" Background="{DynamicResource SecondaryBackground}" BorderThickness="0" FontSize="13" SelectedIndex="1" Foreground="{DynamicResource PrimaryText}" ToolTip.Tip="Interlineado">
+                              <ComboBoxItem Content="1.0" Tag="1.0"/>
+                              <ComboBoxItem Content="1.15" Tag="1.15"/>
+                              <ComboBoxItem Content="1.2" Tag="1.2"/>
+                              <ComboBoxItem Content="1.5" Tag="1.5"/>
+                              <ComboBoxItem Content="2.0" Tag="2.0"/>
+                          </ComboBox>
+                          
+                          <Button Classes="ToolBtn" x:Name="DecreaseIndentButton" ToolTip.Tip="Reducir sangría">
+                              <TextBlock Text="⇤" FontSize="16" Foreground="#1E293B" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+                          </Button>
+                          <Button Classes="ToolBtn" x:Name="IncreaseIndentButton" ToolTip.Tip="Aumentar sangría">
+                              <TextBlock Text="⇥" FontSize="16" Foreground="#1E293B" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+                          </Button>
+                      </StackPanel>
+                  </StackPanel>
+
+                  <!-- INSERT TOOLBAR -->
+                  <StackPanel x:Name="InsertToolbar" Orientation="Horizontal" Spacing="24" IsVisible="False">
+                      <!-- Images -->
+                      <Button Classes="MenuOption" x:Name="InsertImageButton" Width="120" Command="{Binding InsertImageCommand}">
+                          <StackPanel Orientation="Horizontal" Spacing="8">
+                              <TextBlock Text="🖼️" FontSize="16"/>
+                              <TextBlock Text="Imágenes" VerticalAlignment="Center" FontWeight="Medium"/>
+                          </StackPanel>
+                      </Button>
+
+                      <!-- Table -->
+                      <Button Classes="MenuOption" x:Name="InsertTableButton" Width="100" Command="{Binding InsertTableCommand}">
+                          <StackPanel Orientation="Horizontal" Spacing="8">
+                              <TextBlock Text="📊" FontSize="16"/>
+                              <TextBlock Text="Tabla" VerticalAlignment="Center" FontWeight="Medium"/>
+                          </StackPanel>
+                      </Button>
+
+                      <Border Width="1" Background="#E2E8F0" Height="24" VerticalAlignment="Center"/>
+
+                      <!-- Pages Group: Blank Page / Page Break -->
+                      <Button Classes="MenuOption" x:Name="InsertBlankPageButton" Width="140" Command="{Binding InsertBlankPageCommand}">
+                          <StackPanel Orientation="Horizontal" Spacing="8">
+                              <TextBlock Text="📄" FontSize="16"/>
+                              <TextBlock Text="Página en blanco" VerticalAlignment="Center" FontWeight="Medium"/>
+                          </StackPanel>
+                      </Button>
+
+                      <Button Classes="MenuOption" x:Name="InsertPageBreakButton" Width="140" Command="{Binding InsertPageBreakCommand}">
+                          <StackPanel Orientation="Horizontal" Spacing="8">
+                              <TextBlock Text="📑" FontSize="16"/>
+                              <TextBlock Text="Salto de página" VerticalAlignment="Center" FontWeight="Medium"/>
+                          </StackPanel>
+                      </Button>
+                  </StackPanel>
+
+                  <!-- IMAGE FORMAT TOOLBAR (Contextual) -->
+                  <StackPanel x:Name="ImageFormatToolbar" Orientation="Horizontal" Spacing="24" IsVisible="False">
+                      <!-- Arrange/ZIndex -->
+                      <StackPanel Orientation="Horizontal" Spacing="4">
+                          <Button Classes="MenuOption" x:Name="BringForwardButton" Width="140">
+                              <StackPanel Orientation="Horizontal" Spacing="8">
+                                  <TextBlock Text="🔼" FontSize="16"/>
+                                  <TextBlock Text="Traer adelante" VerticalAlignment="Center" FontWeight="Medium"/>
+                              </StackPanel>
+                          </Button>
+                          <Button Classes="MenuOption" x:Name="SendBackwardButton" Width="140">
+                              <StackPanel Orientation="Horizontal" Spacing="8">
+                                  <TextBlock Text="🔽" FontSize="16"/>
+                                  <TextBlock Text="Enviar atrás" VerticalAlignment="Center" FontWeight="Medium"/>
+                              </StackPanel>
+                          </Button>
+                      </StackPanel>
+
+                      <Border Width="1" Background="#E2E8F0" Height="24" VerticalAlignment="Center"/>
+
+                      <!-- Crop -->
+                      <StackPanel Orientation="Horizontal" Spacing="4">
+                          <Button Classes="MenuOption" x:Name="CropButton" Width="100">
+                              <StackPanel Orientation="Horizontal" Spacing="8">
+                                  <TextBlock Text="✂️" FontSize="16"/>
+                                  <TextBlock Text="Recortar" VerticalAlignment="Center" FontWeight="Medium"/>
+                              </StackPanel>
+                          </Button>
+                      </StackPanel>
+
+                      <Border Width="1" Background="#E2E8F0" Height="24" VerticalAlignment="Center"/>
+                      <!-- Rotation / Flipping -->
+                      <StackPanel Orientation="Horizontal" Spacing="4">
+                          <Button Classes="ToolBtn" x:Name="RotateLeftButton" ToolTip.Tip="Girar 90° a la izquierda">
+                              <TextBlock Text="↺" FontSize="18" FontWeight="Bold" Foreground="#1E293B" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                          </Button>
+                          <Button Classes="ToolBtn" x:Name="RotateRightButton" ToolTip.Tip="Girar 90° a la derecha">
+                              <TextBlock Text="↻" FontSize="18" FontWeight="Bold" Foreground="#1E293B" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                          </Button>
+                          <Button Classes="ToolBtn" x:Name="FlipHorizontalButton" ToolTip.Tip="Voltear horizontalmente">
+                              <TextBlock Text="↔" FontSize="18" FontWeight="Bold" Foreground="#1E293B" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                          </Button>
+                          <Button Classes="ToolBtn" x:Name="FlipVerticalButton" ToolTip.Tip="Voltear verticalmente">
+                              <TextBlock Text="↕" FontSize="18" FontWeight="Bold" Foreground="#1E293B" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                          </Button>
+                      </StackPanel>
+                  </StackPanel>
+              </Grid>
+          </ScrollViewer>
+      </Border>
+      
+      <!-- Document Canvas (The Paper) -->
+      <Grid Grid.Row="2" x:Name="EditorHost" ClipToBounds="True" ZIndex="1" />
+      
+      <!-- Status Footer -->
+      <Border Grid.Row="3" Background="{DynamicResource MainBackground}" Padding="24,2" BoxShadow="0 -1 2 0 #05000000" ZIndex="10">
+          <Grid ColumnDefinitions="Auto, Auto, *, Auto">
+              <!-- Page Info -->
+              <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="16">
+                  <TextBlock x:Name="PageInfoText" Text="Página 1 de 1" FontSize="12" FontWeight="Medium" Foreground="#64748B" VerticalAlignment="Center"/>
+              </StackPanel>
+              
+              <!-- Word Count -->
+              <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="16" Margin="16,0,0,0">
+                  <TextBlock x:Name="WordCountText" Text="0 palabras" FontSize="12" FontWeight="Medium" Foreground="#64748B" VerticalAlignment="Center"/>
+                  <TextBlock Text="Español (España)" FontSize="12" FontWeight="Medium" Foreground="#64748B" VerticalAlignment="Center"/>
+              </StackPanel>
+              
+              <!-- Zoom Controls -->
+              <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+                  <Button Width="24" Height="24" Padding="0" Background="#F8FAFC" CornerRadius="12" Cursor="Hand" Focusable="False" BorderThickness="0" x:Name="ZoomOutButton">
+                      <TextBlock Text="−" FontSize="12" FontWeight="Bold" Foreground="#334155" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+                  </Button>
+                  
+                  <Slider x:Name="ZoomSlider" Width="120" Minimum="50" Maximum="200" Value="100" VerticalAlignment="Center" Focusable="False"/>
+                  
+                  <Button Width="24" Height="24" Padding="0" Background="#F8FAFC" CornerRadius="12" Cursor="Hand" Focusable="False" BorderThickness="0" x:Name="ZoomInButton">
+                      <TextBlock Text="+" FontSize="12" FontWeight="Bold" Foreground="#334155" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+                  </Button>
+                  
+                  <TextBlock x:Name="ZoomPercentText" Text="{Binding #ZoomSlider.Value, StringFormat='{}{0:0}%'}" FontSize="12" FontWeight="SemiBold" Foreground="#334155" VerticalAlignment="Center" MinWidth="45" TextAlignment="Right"/>
+              </StackPanel>
+          </Grid>
+      </Border>
+      
+  </Grid>
+</UserControl>
