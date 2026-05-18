@@ -6,7 +6,7 @@
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
              x:Class="AvaloniaShareApp.Infrastructure.Ui.Views.TrashView"
              x:DataType="vm:TrashViewModel"
-             Background="{DynamicResource SecondaryBackground}">
+             Background="Transparent">
 
     <UserControl.Styles>
         <!-- Modern Card Style -->
@@ -104,7 +104,7 @@
 
     <Grid x:Name="MainGrid" RowDefinitions="Auto, *">
         <!-- Header -->
-        <Border Grid.Row="0" Background="{DynamicResource MainBackground}" Padding="32,20" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BorderColor}">
+        <Border Grid.Row="0" Background="Transparent" Padding="32,20" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BorderColor}">
             <Grid ColumnDefinitions="*, Auto">
                 <StackPanel Spacing="6">
                     <TextBlock Text="Papelera" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource PrimaryText}"/>
