@@ -8,7 +8,7 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="AvaloniaShareApp"
-        Width="1000" Height="650"
+        Width="1150" Height="720"
         WindowStartupLocation="CenterScreen"
         SystemDecorations="None"
         ExtendClientAreaToDecorationsHint="True"
@@ -28,7 +28,7 @@
                 <!-- Sidebar -->
                 <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" 
                         Background="{DynamicResource MainBackground}" 
-                        CornerRadius="30" Margin="10, 20, 10, 20" Padding="10, 15"
+                        CornerRadius="30" Margin="16, 20, 10, 20" Padding="10, 15"
                         Width="{Binding SidebarWidth}" 
                         VerticalAlignment="Stretch"
                         BoxShadow="0 4 30 0 #40000000"

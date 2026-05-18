@@ -9,71 +9,135 @@
              Background="{DynamicResource SecondaryBackground}">
 
     <UserControl.Styles>
+        <!-- Modern Card Style -->
         <Style Selector="Border.TrashCard">
             <Setter Property="Background" Value="{DynamicResource MainBackground}"/>
-            <Setter Property="CornerRadius" Value="24"/>
-            <Setter Property="Padding" Value="20"/>
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
             <Setter Property="BoxShadow" Value="{DynamicResource CardShadow}"/>
             <Setter Property="Transitions">
                 <Transitions>
-                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2"/>
+                    <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.25" Easing="CubicEaseOut"/>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.25" Easing="CubicEaseOut"/>
                 </Transitions>
             </Setter>
         </Style>
         <Style Selector="Border.TrashCard:pointerover">
-            <Setter Property="RenderTransform" Value="translateY(-5px)"/>
+            <Setter Property="RenderTransform" Value="translateY(-4px)"/>
+            <Setter Property="BoxShadow" Value="0 10 25 0 #12000000"/>
         </Style>
         
+        <!-- Clean Empty Trash Button -->
+        <Style Selector="Button.EmptyTrashBtn">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#EF4444"/>
+            <Setter Property="BorderThickness" Value="1.2"/>
+            <Setter Property="Foreground" Value="#EF4444"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="18,10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.2"/>
+                    <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+                    <BrushTransition Property="Foreground" Duration="0:0:0.2"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button.EmptyTrashBtn:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#FFF1F2"/>
+            <Setter Property="Foreground" Value="#DF1C41"/>
+            <Setter Property="BorderBrush" Value="#DF1C41"/>
+        </Style>
+
+        <!-- Base Action Button Style -->
         <Style Selector="Button.ActionBtn">
-            <Setter Property="Width" Value="36"/>
-            <Setter Property="Height" Value="36"/>
-            <Setter Property="CornerRadius" Value="18"/>
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="CornerRadius" Value="17"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Transitions">
                 <Transitions>
                     <BrushTransition Property="Background" Duration="0:0:0.2"/>
+                    <BrushTransition Property="Foreground" Duration="0:0:0.2"/>
                 </Transitions>
             </Setter>
         </Style>
-        <Style Selector="Button.ActionBtn:pointerover">
-            <Setter Property="Background" Value="#F1F5F9"/>
+
+        <!-- Restore Button specific hover -->
+        <Style Selector="Button.RestoreBtn">
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryText}"/>
+        </Style>
+        <Style Selector="Button.RestoreBtn:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#E6F4EA"/>
+            <Setter Property="Foreground" Value="#137333"/>
+        </Style>
+
+        <!-- Delete Button specific hover -->
+        <Style Selector="Button.DeleteBtn">
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryText}"/>
+        </Style>
+        <Style Selector="Button.DeleteBtn:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#FEE2E2"/>
+            <Setter Property="Foreground" Value="#DC2626"/>
+        </Style>
+        
+        <!-- Animation for entrance -->
+        <Style Selector="Grid#MainGrid">
+            <Style.Animations>
+                <Animation Duration="0:0:0.45" Easing="CubicEaseOut">
+                    <KeyFrame KeyTime="0:0:0">
+                        <Setter Property="Opacity" Value="0"/>
+                        <Setter Property="TranslateTransform.Y" Value="15"/>
+                    </KeyFrame>
+                    <KeyFrame KeyTime="0:0:0.45">
+                        <Setter Property="Opacity" Value="1"/>
+                        <Setter Property="TranslateTransform.Y" Value="0"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
         </Style>
     </UserControl.Styles>
 
-    <Grid RowDefinitions="Auto, *">
+    <Grid x:Name="MainGrid" RowDefinitions="Auto, *">
         <!-- Header -->
-        <Border Grid.Row="0" Background="{DynamicResource MainBackground}" Padding="32,24" BoxShadow="{DynamicResource ContainerShadow}" ZIndex="10">
+        <Border Grid.Row="0" Background="{DynamicResource MainBackground}" Padding="32,20" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BorderColor}">
             <Grid ColumnDefinitions="*, Auto">
-                <StackPanel Spacing="8">
-                    <TextBlock Text="Papelera" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource PrimaryText}"/>
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Papelera" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource PrimaryText}"/>
                     <TextBlock Text="Los elementos en la papelera se eliminarán permanentemente después de 30 días." 
-                               FontSize="14" Foreground="{DynamicResource SecondaryText}"/>
+                               FontSize="13" Foreground="{DynamicResource SecondaryText}"/>
                 </StackPanel>
                 
                 <Button Grid.Column="1" Command="{Binding EmptyTrashCommand}" 
-                        Background="#FFF1F2" Foreground="#E11D48" FontWeight="SemiBold" 
-                        Padding="16,8" CornerRadius="12" IsVisible="{Binding !IsEmpty}">
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <TextBlock Text="Empty Trash" VerticalAlignment="Center"/>
-                        <TextBlock Text="🗑️" VerticalAlignment="Center"/>
+                        Classes="EmptyTrashBtn" IsVisible="{Binding !IsEmpty}">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <TextBlock Text="Vaciar papelera" VerticalAlignment="Center"/>
+                        <TextBlock Text="🗑" FontSize="14" Foreground="#EF4444" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
             </Grid>
         </Border>
 
-        <!-- Content -->
+        <!-- Content Area -->
         <ScrollViewer Grid.Row="1" Padding="32">
             <Grid>
-                <!-- Empty State -->
-                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="20" IsVisible="{Binding IsEmpty}" Margin="0,100,0,0">
-                    <Border Width="120" Height="120" Background="White" CornerRadius="60" BoxShadow="{DynamicResource CardShadow}">
-                        <TextBlock Text="🗑️" FontSize="60" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.3"/>
+                <!-- Empty State (Premium minimal illustration) -->
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="24" IsVisible="{Binding IsEmpty}" Margin="0,80,0,0">
+                    <Border Width="110" Height="110" Background="{DynamicResource MainBackground}" CornerRadius="55" 
+                            BorderThickness="1" BorderBrush="{DynamicResource BorderColor}" BoxShadow="0 4 20 0 #08000000">
+                        <TextBlock Text="🗑" FontSize="44" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.35" Foreground="{DynamicResource SecondaryText}"/>
                     </Border>
-                    <TextBlock Text="La papelera está vacía" FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryText}" HorizontalAlignment="Center"/>
-                    <TextBlock Text="No hay documentos eliminados recientemente." FontSize="14" Foreground="{DynamicResource SecondaryText}" HorizontalAlignment="Center"/>
+                    <StackPanel Spacing="6" HorizontalAlignment="Center">
+                        <TextBlock Text="La papelera está vacía" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryText}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="No tienes archivos eliminados recientemente." FontSize="13" Foreground="{DynamicResource SecondaryText}" HorizontalAlignment="Center"/>
+                    </StackPanel>
                 </StackPanel>
 
-                <!-- Documents Grid -->
+                <!-- Documents / Spreadsheets Grid -->
                 <ItemsControl ItemsSource="{Binding DeletedItems}" IsVisible="{Binding !IsEmpty}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -82,32 +146,44 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Classes="TrashCard" Width="280" Margin="0,0,24,24">
-                                <StackPanel Spacing="16">
-                                    <Grid ColumnDefinitions="Auto, *, Auto">
-                                        <Border Width="40" Height="40" Background="#F1F5F9" CornerRadius="10">
-                                            <TextBlock Text="{Binding Icon}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Border Classes="TrashCard" Width="290" Margin="0,0,20,20">
+                                <Grid RowDefinitions="Auto, 12, Auto">
+                                    <!-- Top Row: Icon and Info -->
+                                    <Grid Grid.Row="0" ColumnDefinitions="Auto, *">
+                                        <!-- Colored Icon Badge -->
+                                        <Border Grid.Column="0" Width="44" Height="44" Background="{DynamicResource SecondaryBackground}" CornerRadius="12">
+                                            <TextBlock Text="{Binding Icon}" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
                                         
-                                        <StackPanel Grid.Column="1" Margin="12,0" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding Title}" FontWeight="Bold" Foreground="{DynamicResource PrimaryText}" TextTrimming="CharacterEllipsis"/>
-                                            <TextBlock Text="{Binding UpdatedAt, StringFormat='Eliminado el {0:dd/MM/yyyy}'}" FontSize="11" Foreground="{DynamicResource SecondaryText}"/>
+                                        <!-- Title and Timestamp -->
+                                        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryText}" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding UpdatedAt, StringFormat='Eliminado el {0:dd/MM/yyyy}'}" FontSize="11" Foreground="{DynamicResource SecondaryText}" Margin="0,2,0,0"/>
                                         </StackPanel>
+                                    </Grid>
 
-                                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4">
-                                            <Button Classes="ActionBtn" ToolTip.Tip="Restaurar" 
+                                    <!-- Bottom Row: Type Chip and Action Buttons -->
+                                    <Grid Grid.Row="2" ColumnDefinitions="*, Auto">
+                                        <!-- Minimal Type Chip -->
+                                        <Border Grid.Column="0" Padding="8,4" CornerRadius="6" HorizontalAlignment="Left" Background="{DynamicResource SecondaryBackground}">
+                                            <TextBlock Text="{Binding ItemType}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryText}"/>
+                                        </Border>
+
+                                        <!-- Circular Action Controls -->
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                                            <Button Classes="ActionBtn RestoreBtn" ToolTip.Tip="Restaurar archivo" 
                                                     Command="{Binding $parent[UserControl].((vm:TrashViewModel)DataContext).RestoreItemCommand}"
                                                     CommandParameter="{Binding}">
-                                                <TextBlock Text="↩️" FontSize="14" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="↺" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                             </Button>
-                                            <Button Classes="ActionBtn" ToolTip.Tip="Eliminar permanentemente"
+                                            <Button Classes="ActionBtn DeleteBtn" ToolTip.Tip="Eliminar definitivamente"
                                                     Command="{Binding $parent[UserControl].((vm:TrashViewModel)DataContext).PermanentDeleteCommand}"
                                                     CommandParameter="{Binding}">
-                                                <TextBlock Text="❌" FontSize="14" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="✕" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                             </Button>
                                         </StackPanel>
                                     </Grid>
-                                </StackPanel>
+                                </Grid>
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
