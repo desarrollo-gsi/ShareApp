@@ -22,7 +22,7 @@
 
     <Grid>
         <!-- Main Container -->
-        <Border x:Name="RootBorder" CornerRadius="24" Background="{DynamicResource MainBackground}" Margin="10" BoxShadow="{DynamicResource ContainerShadow}" ClipToBounds="True">
+        <Border x:Name="RootBorder" CornerRadius="24" Background="{DynamicResource MainBackground}" Margin="10" BoxShadow="{DynamicResource ContainerShadow}" ClipToBounds="True" PointerPressed="OnTitleBarPointerPressed">
             <Grid RowDefinitions="40, *" ColumnDefinitions="Auto, *">
                 
                 <!-- Sidebar -->
